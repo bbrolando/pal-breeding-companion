@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Breeder's Field Ledger — Palworld 1.0</title>
+<meta name="description" content="A Palworld 1.0 breeding companion — recipes, passive builds, team coverage, and base staffing." />
+<meta name="theme-color" content="#0F1218" />
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="icon" href="./favicon-32.png" sizes="32x32" />
+<link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Field Ledger" />
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap');
+
+:root{
+  --ink:#0F1218; --ink-2:#161B22; --ink-3:#1D242E; --ink-4:#232C38;
+  --line:#2C3542; --line-soft:#242D38;
+  --paper:#EAE5D6; --paper-dim:#9BA6B3; --paper-faint:#6B7683;
+  --paldium:#38D6C8; --paldium-dim:#1E7F78;
+  --amber:#F0B24B; --amber-dim:#7C5E28;
+  --el-neutral:#CDC7B6; --el-fire:#E4622E; --el-water:#3E9BE0; --el-grass:#5CBB4C;
+  --el-electric:#F2C63C; --el-ice:#6CC9DA; --el-ground:#C6924A; --el-dark:#9A6CE0; --el-dragon:#6E62E0;
+  --cat-early:#7FD98F; --cat-worker:#F0B24B; --cat-combat:#EC6A6A; --cat-mount:#5FB8E0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink);color:var(--paper);
+  font-family:'Inter',system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(circle at 12% 6%, rgba(56,214,200,0.06), transparent 42%),
+    radial-gradient(circle at 88% 3%, rgba(240,178,75,0.05), transparent 40%);
+  background-attachment:fixed;
+}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+
+header.bar{position:sticky;top:0;z-index:50;background:rgba(15,18,24,0.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar-inner{display:flex;align-items:center;gap:18px;padding:12px 22px;max-width:1180px;margin:0 auto;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:10px;flex:1 1 auto;min-width:190px}
+.brand .tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--ink);background:var(--paldium);padding:3px 6px;border-radius:3px;font-weight:700}
+.brand h1{font-family:'Oswald',sans-serif;font-weight:600;font-size:17px;letter-spacing:0.5px;text-transform:uppercase;white-space:nowrap}
+.search{display:flex;align-items:center;gap:8px;background:var(--ink-3);border:1px solid var(--line);border-radius:6px;padding:7px 11px;flex:0 1 260px}
+.search input{background:none;border:none;outline:none;color:var(--paper);font-family:'JetBrains Mono',monospace;font-size:12.5px;width:100%}
+.search input::placeholder{color:var(--paper-faint)}
+.search svg{width:14px;height:14px;stroke:var(--paper-faint);flex-shrink:0}
+
+.hero{padding:52px 0 30px}
+.hero .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--paldium);text-transform:uppercase;margin-bottom:16px}
+.hero h2{font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(32px,5.6vw,58px);line-height:1.02;letter-spacing:-0.5px;text-transform:uppercase;max-width:16ch}
+.hero h2 em{font-style:normal;color:var(--paldium)}
+.hero p{margin-top:18px;max-width:58ch;color:var(--paper-dim);font-size:15.5px}
+.hero .meta-row{display:flex;gap:26px;margin-top:26px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--paper-faint)}
+.hero .meta-row b{color:var(--paper);font-weight:500;display:block;font-size:20px;margin-bottom:2px}
+.hero .meta-row span{color:var(--amber)}
+
+.subnav{display:flex;gap:6px;overflow-x:auto;padding:0 22px 10px;max-width:1180px;margin:0 auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.subnav::-webkit-scrollbar{display:none}
+.subnav a{flex:0 0 auto;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.5px;text-transform:uppercase;color:var(--paper-dim);background:var(--ink-3);border:1px solid var(--line);border-radius:16px;padding:6px 12px;text-decoration:none;white-space:nowrap;transition:color .15s,border-color .15s,background .15s}
+.subnav a:hover{color:var(--paper);border-color:var(--paldium-dim)}
+.subnav a.active{background:var(--paldium);color:var(--ink);border-color:var(--paldium);font-weight:700}
+
+section{padding:48px 0;scroll-margin-top:112px}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:22px;border-bottom:1px solid var(--line-soft);padding-bottom:14px}
+.sec-num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--paldium);letter-spacing:1px}
+.sec-head h3{font-family:'Oswald',sans-serif;font-weight:600;font-size:24px;text-transform:uppercase;letter-spacing:1px}
+.sec-head .hint{margin-left:auto;font-size:12px;color:var(--paper-faint);font-family:'JetBrains Mono',monospace}
+
+.bench{background:var(--ink-2);border:1px solid var(--line);border-radius:12px;padding:24px;display:grid;grid-template-columns:270px 1fr;gap:26px}
+.bench .picker label{display:block;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--paper-faint);text-transform:uppercase;margin-bottom:10px}
+.bench select{width:100%;background:var(--ink-3);color:var(--paper);border:1px solid var(--line);border-radius:7px;padding:12px;font-family:'Oswald',sans-serif;font-size:18px;letter-spacing:0.5px;text-transform:uppercase;cursor:pointer;outline:none}
+.bench select:focus{border-color:var(--paldium)}
+.bench .picker .note{margin-top:14px;font-size:12.5px;color:var(--paper-dim);line-height:1.5}
+.bench-out{min-height:170px}
+.recipe{display:flex;align-items:stretch;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.parent{flex:1 1 120px;background:var(--ink-3);border:1px solid var(--line);border-radius:8px;padding:14px;text-align:center}
+.parent .role{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1.5px;color:var(--paper-faint);text-transform:uppercase}
+.parent .who{font-family:'Oswald',sans-serif;font-size:19px;text-transform:uppercase;margin-top:6px;letter-spacing:0.5px}
+.op{display:flex;align-items:center;font-family:'Oswald',sans-serif;font-size:26px;color:var(--paldium);font-weight:600}
+.parent.result{border-color:var(--paldium-dim);background:linear-gradient(180deg,rgba(56,214,200,0.08),transparent)}
+.parent.result .who{color:var(--paldium)}
+.alt-line{font-size:13px;color:var(--paper-dim);margin-top:2px}
+.alt-line b{color:var(--paper);font-weight:600}
+.alt-line .mono{color:var(--amber)}
+
+.el{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:500;padding:3px 8px;border-radius:20px;border:1px solid}
+.el .dot{width:7px;height:7px;border-radius:50%}
+.rarity{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 7px;border-radius:4px;border:1px solid}
+.r-Common{color:var(--paper-dim);border-color:var(--line)}
+.r-Rare{color:var(--paldium);border-color:var(--paldium-dim)}
+.r-Epic{color:#c39be8;border-color:#5a3f7a}
+.r-Legendary{color:var(--amber);border-color:var(--amber-dim)}
+
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.tab{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--paper-dim);background:var(--ink-2);border:1px solid var(--line);border-radius:20px;padding:8px 15px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:7px}
+.tab .cdot{width:8px;height:8px;border-radius:50%}
+.tab:hover{border-color:var(--paldium-dim);color:var(--paper)}
+.tab.active{background:var(--paper);color:var(--ink);border-color:var(--paper);font-weight:700}
+.tab .cnt{opacity:.6}
+
+.roster{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px}
+.dossier{background:var(--ink-2);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease;position:relative}
+.dossier::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--catcolor,transparent)}
+.dossier:hover{transform:translateY(-3px);border-color:var(--paldium-dim);box-shadow:0 12px 30px -18px rgba(0,0,0,0.8)}
+.dossier.flash{border-color:var(--paldium);box-shadow:0 0 0 2px rgba(56,214,200,0.35)}
+.d-top{display:flex;align-items:flex-start;gap:12px;padding:16px 16px 12px;border-bottom:1px solid var(--line-soft)}
+.d-no{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--ink);background:var(--paper);letter-spacing:0.3px}
+.portrait{position:relative;width:60px;height:60px;flex-shrink:0;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--ink-3)}
+.crest{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(140deg,var(--c1),color-mix(in srgb,var(--c2) 50%, #0b0e13))}
+.crest::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 42%, rgba(0,0,0,.30), transparent 65%)}
+.crest-mono{position:relative;z-index:1;font-family:'Oswald',sans-serif;font-weight:700;font-size:23px;color:var(--paper);letter-spacing:0.5px;text-shadow:0 1px 3px rgba(0,0,0,.65)}
+.crest-dots{position:absolute;bottom:5px;left:0;right:0;display:flex;gap:3px;justify-content:center;z-index:1}
+.crest-dots .cd{width:6px;height:6px;border-radius:50%;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+.pimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2}
+.portrait .d-no{position:absolute;right:0;bottom:0;z-index:3;font-size:9px;padding:2px 4px;border-radius:5px 0 0 0}
+.bench-target{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.bt-name{font-family:'Oswald',sans-serif;font-size:20px;text-transform:uppercase;letter-spacing:0.5px;line-height:1}
+.bt-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--paper-faint);margin-top:4px}
+.d-title{flex:1;min-width:0}
+.d-title h4{font-family:'Oswald',sans-serif;font-weight:600;font-size:21px;text-transform:uppercase;letter-spacing:0.5px;line-height:1}
+.d-role{font-size:12px;color:var(--paper-dim);margin-top:5px}
+.d-chips{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap;align-items:center}
+
+.d-work{display:flex;flex-wrap:wrap;gap:6px;padding:12px 16px;border-bottom:1px solid var(--line-soft)}
+.wchip{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.5px;text-transform:uppercase;color:var(--paper);background:var(--ink-3);border:1px solid var(--line);padding:3px 8px;border-radius:5px}
+.wchip b{color:var(--paldium);font-weight:700;margin-left:3px}
+.wchip.hi b{color:var(--amber)}
+
+.d-block{padding:13px 16px;border-bottom:1px solid var(--line-soft)}
+.d-block:last-child{border-bottom:none}
+.d-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--paldium);margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.d-label::before{content:"";width:12px;height:1px;background:var(--paldium)}
+.partner{font-size:13px;color:var(--paper);line-height:1.5}
+.partner b{color:var(--amber);font-weight:600}
+.loc{display:flex;gap:10px;align-items:flex-start}
+.loc .pin{width:15px;height:15px;flex-shrink:0;margin-top:2px;stroke:var(--paldium);fill:none}
+.loc .txt{font-size:13px;color:var(--paper-dim);line-height:1.5}
+.loc .txt b{color:var(--paper);font-weight:600}
+.coord{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--amber);background:var(--ink-3);border:1px solid var(--line);padding:2px 6px;border-radius:4px;white-space:nowrap;display:inline-block;margin-top:5px}
+.recipe-mini{font-size:13px;color:var(--paper-dim);line-height:1.6}
+.recipe-mini .pair{font-family:'Oswald',sans-serif;font-size:15px;text-transform:uppercase;color:var(--paper);letter-spacing:0.4px}
+.recipe-mini .pair .plus{color:var(--paldium);margin:0 4px}
+.recipe-mini .alt{margin-top:5px;font-size:12px;color:var(--paper-faint)}
+.tag-self{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--amber);border:1px solid var(--amber-dim);border-radius:4px;padding:2px 6px;letter-spacing:1px;text-transform:uppercase}
+.passives{display:flex;flex-wrap:wrap;gap:6px}
+.pchip{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--ink-3);border:1px solid var(--line);color:var(--paper);padding:4px 9px;border-radius:5px;cursor:help;transition:border-color .15s}
+.pchip:hover{border-color:var(--paldium)}
+.pchip.legendary{border-color:var(--amber-dim);color:var(--amber)}
+
+.protocol{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.pcard{background:var(--ink-2);border:1px solid var(--line);border-radius:11px;padding:20px}
+.pcard .step{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--paldium);letter-spacing:1px}
+.pcard h5{font-family:'Oswald',sans-serif;font-size:18px;text-transform:uppercase;margin:6px 0 10px;letter-spacing:0.5px}
+.pcard p{font-size:13.5px;color:var(--paper-dim);line-height:1.6}
+.pcard p b{color:var(--paper)}
+.pcard .mono{color:var(--amber)}
+.recipe-list{list-style:none;margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+.recipe-list li{font-family:'JetBrains Mono',monospace;font-size:11.5px;background:var(--ink-3);border:1px solid var(--line);padding:4px 8px;border-radius:5px;color:var(--paper)}
+.odds{margin-top:12px;display:flex;flex-direction:column;gap:9px}
+.odd{display:grid;grid-template-columns:104px 1fr 42px;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px}
+.odd .lab{color:var(--paper-dim)}
+.odd .track{height:8px;background:var(--ink-3);border-radius:4px;overflow:hidden;border:1px solid var(--line)}
+.odd .fill{height:100%;border-radius:4px}
+.odd .pct{color:var(--paper);text-align:right}
+
+.plib{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.prow{background:var(--ink-2);border:1px solid var(--line);border-radius:10px;padding:15px 17px;display:flex;flex-direction:column;gap:5px}
+.prow .pn{font-family:'Oswald',sans-serif;font-size:17px;text-transform:uppercase;letter-spacing:0.5px;display:flex;align-items:center;gap:9px}
+.prow .grade{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;padding:2px 6px;border-radius:4px;border:1px solid}
+.grade.t3{color:var(--amber);border-color:var(--amber-dim)}
+.grade.t2{color:var(--paldium);border-color:var(--paldium-dim)}
+.grade.util{color:var(--paper-dim);border-color:var(--line)}
+.prow .pe{font-size:13px;color:var(--paper-dim)}
+.prow .pe b{color:var(--paper);font-weight:600}
+
+footer{border-top:1px solid var(--line);padding:34px 0 46px;margin-top:20px}
+footer .disc{background:var(--ink-2);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:8px;padding:16px 18px;font-size:13px;color:var(--paper-dim);line-height:1.6}
+footer .disc b{color:var(--paper)}
+footer .links{margin-top:18px;display:flex;gap:18px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:12px}
+footer .links a{color:var(--paldium);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}
+footer .links a:hover{border-color:var(--paldium)}
+footer .copy{margin-top:20px;font-size:11px;color:var(--paper-faint);font-family:'JetBrains Mono',monospace}
+.empty{padding:40px;text-align:center;color:var(--paper-faint);font-family:'JetBrains Mono',monospace;font-size:13px;border:1px dashed var(--line);border-radius:10px}
+
+/* passive popover (mobile tap) */
+.pchip{cursor:pointer}
+.pchip-pop{position:fixed;z-index:80;background:var(--ink-4);border:1px solid var(--paldium-dim);border-radius:8px;padding:10px 12px;font-size:12.5px;color:var(--paper);line-height:1.45;box-shadow:0 14px 34px -12px rgba(0,0,0,.85);opacity:0;pointer-events:none;transform:translateY(-4px);transition:opacity .12s,transform .12s;max-width:280px}
+.pchip-pop.show{opacity:1;transform:none}
+.pchip-pop b{color:var(--amber)}
+
+/* team coverage planner */
+.planner{background:var(--ink-2);border:1px solid var(--line);border-radius:12px;padding:22px}
+.team-picks{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.pslot label{display:block;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1.5px;color:var(--paper-faint);text-transform:uppercase;margin-bottom:6px}
+.psel{width:100%;background:var(--ink-3);color:var(--paper);border:1px solid var(--line);border-radius:7px;padding:10px;font-family:'Inter',sans-serif;font-size:13px;cursor:pointer;outline:none}
+.psel:focus{border-color:var(--paldium)}
+.cov-empty,.cov-note{font-size:12.5px;color:var(--paper-faint);line-height:1.5}
+.cov-note{margin-top:10px}
+.team-els{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tel-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--paper-dim);text-transform:uppercase}
+.cov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px}
+.cov-cell{background:var(--ink-3);border:1px solid var(--line);border-radius:9px;padding:12px;border-left:3px solid var(--line)}
+.cov-cell.ok{border-left-color:var(--cat-early)}
+.cov-cell.gap{border-left-color:var(--cat-combat)}
+.cov-cell.key{box-shadow:inset 0 0 0 1px var(--amber-dim)}
+.ce-need{font-size:11.5px;color:var(--paper-dim);margin-top:8px}
+.ce-need b{color:var(--paper)}
+.ce-status{font-family:'JetBrains Mono',monospace;font-size:11px;margin-top:4px}
+.cov-cell.ok .ce-status{color:var(--cat-early)}
+.cov-cell.gap .ce-status{color:var(--cat-combat)}
+.verdict{background:var(--ink-3);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:13.5px;color:var(--paper-dim);line-height:1.55}
+.verdict b{color:var(--paper)}
+.verdict .warn{color:var(--amber);display:block;margin-top:5px}
+
+/* base-staffing templates */
+.templates{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.tmpl-card{background:var(--ink-2);border:1px solid var(--line);border-radius:12px;padding:18px;border-top:3px solid var(--cat-worker)}
+.tmpl-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.tmpl-head h5{font-family:'Oswald',sans-serif;font-size:19px;text-transform:uppercase;letter-spacing:0.5px}
+.tmpl-tier{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1px;color:var(--amber);text-transform:uppercase;border:1px solid var(--amber-dim);border-radius:4px;padding:2px 6px;white-space:nowrap}
+.tmpl-purpose{font-size:13px;color:var(--paper-dim);margin:8px 0 12px;line-height:1.5}
+.tmpl-rows{display:flex;flex-direction:column;gap:6px}
+.tmpl-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--ink-3);border:1px solid var(--line);border-radius:6px;padding:7px 10px}
+.tmpl-job{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.5px;color:var(--paper-dim);text-transform:uppercase}
+.tmpl-pal{font-family:'Oswald',sans-serif;font-size:15px;text-transform:uppercase;letter-spacing:0.4px;color:var(--paper)}
+a.tmpl-pal{color:var(--paldium);cursor:pointer;text-decoration:none;border-bottom:1px solid transparent}
+a.tmpl-pal:hover{border-color:var(--paldium)}
+.tmpl-tip{margin-top:10px;font-size:12px;color:var(--paper-faint);line-height:1.5;border-left:2px solid var(--paldium-dim);padding-left:10px}
+
+/* passive breeding guide */
+.guide-intro{font-size:14.5px;color:var(--paper-dim);line-height:1.6;max-width:72ch;margin-bottom:24px}
+.guide-intro b{color:var(--paper)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:16px;margin-bottom:26px}
+.step-card{background:var(--ink-2);border:1px solid var(--line);border-radius:11px;padding:18px}
+.step-card .snum{font-family:'Oswald',sans-serif;font-size:32px;font-weight:700;color:var(--paldium-dim);line-height:1}
+.step-card h5{font-family:'Oswald',sans-serif;font-size:16px;text-transform:uppercase;letter-spacing:0.5px;margin:4px 0 8px}
+.step-card p{font-size:12.5px;color:var(--paper-dim);line-height:1.55}
+.step-card p b{color:var(--paper)}
+.step-card .mono{color:var(--amber);font-family:'JetBrains Mono',monospace;font-size:11.5px}
+.ladder{background:var(--ink-2);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:24px}
+.ladder h5{font-family:'Oswald',sans-serif;font-size:16px;text-transform:uppercase;letter-spacing:0.5px}
+.ladder .lsub{font-size:12.5px;color:var(--paper-faint);margin:4px 0 16px;line-height:1.5}
+.lrungs{display:flex;flex-direction:column;gap:12px}
+.lrung{background:var(--ink-3);border:1px solid var(--line);border-radius:9px;padding:12px 14px}
+.lrung .gen{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:1.5px;color:var(--paldium);text-transform:uppercase;margin-bottom:8px}
+.cross{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cross .arrow{color:var(--paldium);font-family:'Oswald',sans-serif;font-size:17px}
+.parentset,.result{display:flex;gap:5px;flex-wrap:wrap}
+.gchip{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--ink-4);border:1px solid var(--line);color:var(--paper);padding:3px 8px;border-radius:5px}
+.gchip.win{border-color:var(--paldium-dim);color:var(--paldium)}
+.gchip.leg{border-color:var(--amber-dim);color:var(--amber)}
+.lnote{font-size:12px;color:var(--paper-faint);margin-top:9px;line-height:1.5}
+.callouts{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.callout{background:var(--ink-2);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:9px;padding:14px 16px}
+.callout .ct{font-family:'Oswald',sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;color:var(--amber);margin-bottom:6px}
+.callout p{font-size:12.5px;color:var(--paper-dim);line-height:1.5}
+.callout p b{color:var(--paper)}
+
+.guide-target{background:var(--ink-2);border:1px solid var(--line);border-left:3px solid var(--paldium);border-radius:11px;padding:16px 18px;margin-bottom:22px}
+.gt-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.gt-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--paper-faint);text-transform:uppercase}
+.gt-name{font-family:'Oswald',sans-serif;font-size:22px;text-transform:uppercase;letter-spacing:0.5px;color:var(--paldium)}
+.gt-no{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--amber)}
+.gt-pass{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
+.gt-src{font-size:13px;color:var(--paper-dim);line-height:1.55;margin-top:12px}
+.gt-src b{color:var(--paper)}
+
+.install-pill{position:fixed;right:14px;bottom:14px;z-index:90;display:none;align-items:center;gap:7px;background:var(--paldium);color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.5px;border:none;border-radius:22px;padding:11px 16px;cursor:pointer;box-shadow:0 10px 26px -8px rgba(0,0,0,.7);text-transform:uppercase}
+.install-pill.show{display:inline-flex}
+.ios-hint{position:fixed;left:14px;right:14px;bottom:14px;z-index:90;display:none;background:var(--ink-4);border:1px solid var(--paldium-dim);border-radius:12px;padding:12px 34px 12px 14px;font-size:13px;color:var(--paper);line-height:1.5;box-shadow:0 12px 30px -10px rgba(0,0,0,.8)}
+.ios-hint.show{display:block}
+.ios-hint b{color:var(--paldium)}
+.ios-hint .x{position:absolute;top:8px;right:12px;color:var(--paper-faint);cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:14px}
+
+@media (max-width:720px){
+  .bench{grid-template-columns:1fr}
+  .brand h1{font-size:15px}
+  .hero{padding:38px 0 24px}
+  section{padding:38px 0}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div id="pchipPop" class="pchip-pop" role="status" aria-live="polite"></div>
+
+<header class="bar">
+  <div class="bar-inner">
+    <div class="brand"><span class="tag">PAL·1.0</span><h1>Breeder's Field Ledger</h1></div>
+  </div>
+  <nav class="subnav" id="subnav" aria-label="Sections">
+    <a href="#bench">Bench</a>
+    <a href="#coverage">Coverage</a>
+    <a href="#templates">Bases</a>
+    <a href="#protocol">Protocol</a>
+    <a href="#guide">Passive Guide</a>
+    <a href="#passives">Passives</a>
+  </nav>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Specimen catalog · breeding protocol · field locations</div>
+    <h2>Pair the parents. <em>Roll the passives.</em> Staff the base.</h2>
+    <p>A working companion for Palworld 1.0 breeding across the whole game: early-game starters, the Level-8 base-worker specialists, and the endgame combat and boss-killing legends — each with a recipe, the passive stack to grind for, and where to source it.</p>
+    <div class="meta-row">
+      <div><b id="palCount">30</b><span>specimens</span></div>
+      <div><b>4</b><span>role categories</span></div>
+      <div><b>Lv10</b><span>work cap in 1.0</span></div>
+      <div><b>Lv19</b><span>breeding farm unlock</span></div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+
+  <section id="bench">
+    <div class="sec-head"><span class="sec-num">01</span><h3>The Breeding Bench</h3><span class="hint">pick a target → get the recipe</span></div>
+    <div class="bench">
+      <div class="picker">
+        <label for="target">Target specimen</label>
+        <select id="target"></select>
+        <p class="note">Choose what you want to hatch. The bench returns the easiest verified route, the passive stack, and where to source the parents.</p>
+      </div>
+      <div class="bench-out" id="benchOut"></div>
+    </div>
+  </section>
+
+  <section id="coverage">
+    <div class="sec-head"><span class="sec-num">02</span><h3>Team Coverage Planner</h3><span class="hint">pick up to 5 → find the gaps</span></div>
+    <div class="planner">
+      <div class="team-picks" id="teamPicks"></div>
+      <div class="cov-out" id="covOut"></div>
+    </div>
+  </section>
+
+  <section id="templates">
+    <div class="sec-head"><span class="sec-num">03</span><h3>Base-Staffing Templates</h3><span class="hint">one-tap worker loadouts</span></div>
+    <div class="templates" id="templatesGrid"></div>
+  </section>
+
+  <section id="protocol">
+    <div class="sec-head"><span class="sec-num">04</span><h3>Breeding Protocol</h3><span class="hint">the rules that never change</span></div>
+    <div class="protocol">
+      <div class="pcard">
+        <div class="step">SETUP</div><h5>Farm &amp; Cake</h5>
+        <p>Unlock the <b>Breeding Farm</b> at Tech <span class="mono">Lv19</span> and a <b>Cooking Pot</b> at <span class="mono">Lv17</span>. Drop one male + one female inside; place a Cake in the feed box or no egg forms.</p>
+        <ul class="recipe-list"><li>5 Flour</li><li>8 Red Berries</li><li>7 Milk</li><li>8 Eggs</li><li>2 Honey</li></ul>
+      </div>
+      <div class="pcard">
+        <div class="step">INHERITANCE</div><h5>How passives roll</h5>
+        <p>Each of the child's 4 slots rolls independently. Stack the passives you want across both parents and hatch in bulk.</p>
+        <div class="odds">
+          <div class="odd"><span class="lab">from father</span><span class="track"><span class="fill" style="width:24%;background:var(--paldium)"></span></span><span class="pct">~24%</span></div>
+          <div class="odd"><span class="lab">from mother</span><span class="track"><span class="fill" style="width:20%;background:var(--paldium)"></span></span><span class="pct">~20%</span></div>
+          <div class="odd"><span class="lab">random pool</span><span class="track"><span class="fill" style="width:21%;background:var(--amber)"></span></span><span class="pct">~21%</span></div>
+          <div class="odd"><span class="lab">empty</span><span class="track"><span class="fill" style="width:34%;background:var(--line)"></span></span><span class="pct">~34%</span></div>
+        </div>
+      </div>
+      <div class="pcard">
+        <div class="step">STRATEGY</div><h5>The 4-across split</h5>
+        <p>Put your <b>four target passives across the two parents</b> — a <span class="mono">2/2</span>, <span class="mono">1/3</span>, or <span class="mono">0/4</span> split all work. Hatch repeatedly, keep the best child. Expect <b>6–10 eggs</b> to converge on all four.</p>
+      </div>
+      <div class="pcard">
+        <div class="step">STAFFING</div><h5>Specialists over generalists</h5>
+        <p>1.0 raised work suitability to <span class="mono">Lv10</span> and re-tuned every Pal. A Pal that does <b>one job at Lv8</b> beats one that does five jobs at Lv2 — and it condenses far better. Assign one job per worker with the Monitoring Stand and keep fighters off the base.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="guide">
+    <div class="sec-head"><span class="sec-num">05</span><h3>Breeding for Passives</h3><span class="hint">the ladder method, step by step</span></div>
+
+    <p class="guide-intro">A hatchling's passives are drawn from the <b>combined pool</b> of both parents' passives (any duplicate is merged into one), and any slots left empty may then be filled with <b>random</b> passives from the whole library — including bad ones. Everything below is about controlling that pool and driving toward a full four-passive inherit. There are only ever <b>4 slots</b>, and that cap never changes. The steps are universal; the ladder underneath adapts to whichever Pal you pick in the Breeding Bench dropdown up top.</p>
+
+    <div class="steps">
+      <div class="step-card"><div class="snum">1</div><h5>Lock your 4 passives</h5><p>Pick the exact final loadout from the Passive Library — four slots, no more. A mount wants <span class="mono">Swift · Runner · Nimble · Legend</span>; a worker wants <span class="mono">Artisan · Serious · Lucky</span> + one; a fighter wants <span class="mono">Legend · Ferocious · Musclehead · Swift</span>.</p></div>
+      <div class="step-card"><div class="snum">2</div><h5>Gather clean sources</h5><p>Catch wild Pals that already carry <b>one</b> target passive and little else. Wild <b>Lucky</b> Pals always have Lucky; <b>Legendary</b> Pals always have Legend. Fewer passives on a parent means better odds — every junk trait competes for a slot.</p></div>
+      <div class="step-card"><div class="snum">3</div><h5>Keep the pool at four</h5><p>Split your four targets across the two parents — <span class="mono">2/2</span>, <span class="mono">1/3</span>, or <span class="mono">0/4</span> all work. Don't let the combined pool exceed your four. Put your <b>rarest</b> passive on the <b>male</b> — the father's pass-down chance is slightly higher.</p></div>
+      <div class="step-card"><div class="snum">4</div><h5>Ladder up</h5><p>You rarely hit four in one hop. Breed toward a clean <b>2-passive</b> child, save it, then pair it with a Pal holding the other two. Keep the best hatchling each generation as the next parent. "Wash" an unwanted trait by breeding with a <b>0-passive</b> mate.</p></div>
+      <div class="step-card"><div class="snum">5</div><h5>Drive to a full four</h5><p>Once the two parents together hold exactly your four, hatch in bulk and keep only the child that inherits <b>all four</b>. A full four means <b>zero empty slots</b>, so no random junk can mutate in. That Pal is your <b>template</b>.</p></div>
+      <div class="step-card"><div class="snum">6</div><h5>Mass-produce</h5><p>Breed two Pals that each already hold the same four passives. The pool is only those four, so every hatchling draws exclusively from your set — and a big share roll the complete four. This stamps one perfect loadout across a whole team.</p></div>
+    </div>
+
+    <div id="guideDynamic"></div>
+
+    <div class="callouts">
+      <div class="callout"><div class="ct">Legend is special</div><p><b>Legend never rolls randomly</b> — it exists only on Legendary Pals. To put it on anything else, a parent or ancestor in the chain must be a Legendary carrying it.</p></div>
+      <div class="callout"><div class="ct">Wild beats bred (Legendaries)</div><p>A bred Legendary has <b>lower base stats</b> than a wild-caught one unless it's an Alpha. For Jetragon, Frostallion and the like, catch the species first, then only same-species breed to fix passives.</p></div>
+      <div class="callout"><div class="ct">Carry passives anywhere</div><p>Passives inherit <b>independently of species</b>. Build a donor with your four on any easy Pal, then follow the chart (the Bench, section 01) toward your target — the passives ride along.</p></div>
+      <div class="callout"><div class="ct">Don't pollute the line</div><p>Passives <b>can't be removed</b> once on a Pal. Never breed junk traits into your chain, and wash stray ones with a 0-passive mate before continuing.</p></div>
+    </div>
+  </section>
+
+  <section id="passives">
+    <div class="sec-head"><span class="sec-num">06</span><h3>Passive Library</h3><span class="hint">tap any chip for its effect</span></div>
+    <div class="plib" id="plib"></div>
+  </section>
+
+
+  <footer>
+    <div class="disc">
+      <b>On the data.</b> Every Paldeck number, element, and work-suitability level here is pulled from a single current 1.0 index, so they stay consistent (older guides use a different numbering). Recipes marked <span class="mono">rank breed</span> have hundreds of valid pairs — the calculators below find the cheapest from Pals you own; <span class="mono">self-only</span> legendaries are caught once then bred together for passives; <span class="mono">raid</span> Pals come from Summoning Altar slabs. A handful of spawn coordinates are exact; others give the region. Pals show an original element crest by default — to display real sprites, drop image files named by Paldeck number into an <span class="mono">images/</span> folder beside this file (e.g. <span class="mono">images/150.png</span>, <span class="mono">images/200B.png</span>).
+    </div>
+    <div class="links">
+      <a href="https://palworld.gg/breeding-calculator" target="_blank" rel="noopener">palworld.gg — breeding calculator</a>
+      <a href="https://pindrop.gg/palworld/breeding" target="_blank" rel="noopener">pindrop.gg — parent pairs</a>
+      <a href="https://palworld.wiki.gg/wiki/Breeding" target="_blank" rel="noopener">wiki.gg — mechanics</a>
+    </div>
+    <div class="copy">Field Ledger · fan-made reference · not affiliated with Pocketpair, Inc.</div>
+  </footer>
+</div>
+
+<script>
+const EL={Neutral:'--el-neutral',Fire:'--el-fire',Water:'--el-water',Grass:'--el-grass',Electric:'--el-electric',Ice:'--el-ice',Ground:'--el-ground',Dark:'--el-dark',Dragon:'--el-dragon'};
+function elChip(n){const v=EL[n]?`var(${EL[n]})`:'var(--paper)';return `<span class="el" style="color:${v};border-color:${v}55;background:${v}12"><span class="dot" style="background:${v}"></span>${n}</span>`;}
+function elColor(n){return EL[n]?`var(${EL[n]})`:'var(--paper)';}
+function palPortrait(p){
+  const c1=elColor(p.els[0]), c2=elColor(p.els[1]||p.els[0]);
+  const initials=p.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const dots=p.els.map(e=>`<span class="cd" style="background:${elColor(e)}"></span>`).join('');
+  return `<div class="portrait" style="--c1:${c1};--c2:${c2}">
+      <div class="crest"><span class="crest-mono">${initials}</span><span class="crest-dots">${dots}</span></div>
+      <img class="pimg" src="images/${p.no}.png" alt="${p.name}" loading="lazy" onerror="this.remove()"/>
+      <span class="d-no">#${p.no}</span>
+    </div>`;
+}
+
+const CATS={
+  early:{label:'Early Game',color:'--cat-early'},
+  worker:{label:'Base Workers',color:'--cat-worker'},
+  combat:{label:'Combat & Boss',color:'--cat-combat'},
+  mount:{label:'Mounts',color:'--cat-mount'}
+};
+
+const PASSIVES=[
+  {n:'Legend',g:'t3',e:'+20% Attack, +20% Defense, +15% Move Speed. Native to legendaries.'},
+  {n:'Ferocious',g:'t3',e:'+20% Attack, no downside — the clean damage roll.'},
+  {n:'Swift',g:'t3',e:'+30% Move Speed. Top-tier for any mount.'},
+  {n:'Lucky',g:'t3',e:'+15% Attack and +15% Work Speed. Dual-purpose.'},
+  {n:'Artisan',g:'t3',e:'+50% Work Speed. The single best base-worker passive.'},
+  {n:'Musclehead',g:'t2',e:'+30% Attack but −50% Work Speed. Combat-only.'},
+  {n:'Runner',g:'t2',e:'+20% Move Speed. Solid mid-tier speed roll.'},
+  {n:'Nimble',g:'util',e:'+10% Move Speed. Filler speed, stacks with the rest.'},
+  {n:'Burly Body',g:'t2',e:'+20% Defense. Survivability for tanky roles.'},
+  {n:'Serious',g:'util',e:'Raises Work Speed — pair with Artisan on any base worker.'},
+  {n:'Divine Dragon',g:'t2',e:'+20% Dragon damage. Jetragon default.'},
+  {n:'Earth Emperor',g:'t2',e:'+Ground damage. Wild-caught Anubis always has this.'},
+  {n:'Vanguard',g:'t2',e:'Boosts the player attack bonus from party partner skills — core to the Gobfin stack.'}
+];
+
+function R(type,a,b,note){return {type,a,b,note};}
+
+const PALS=[
+  /* ---------- EARLY GAME ---------- */
+  {no:'2',name:'Cattiva',els:['Neutral'],cat:'early',rarity:'Common',role:'Starter helper · light hauling',
+   work:[['Handiwork',1],['Gathering',1],['Mining',1],['Transporting',1]],
+   partner:'Cat Helper',partnerText:'follows you and helps carry gathered items, easing your load early on.',
+   loc:'Everywhere near the <b>Plateau of Beginnings</b> and the starting grasslands.',coord:'starter zone',
+   recipe:R('rank'),passives:['Lucky','Serious'],note:'A convenience Pal — no need to min-max it; grab one and move on.'},
+  {no:'4',name:'Lifmunk',els:['Grass'],cat:'early',rarity:'Common',role:'Jack-of-all-trades worker',
+   work:[['Planting',1],['Handiwork',1],['Gathering',1],['Lumbering',1],['Medicine',1]],
+   partner:'—',partnerText:'covers five low-level jobs at once — the flexible glue of an early base.',
+   loc:'Common in the <b>starting grasslands</b> and forest edges.',coord:'starter zone',
+   recipe:R('rank'),passives:['Artisan','Serious','Lucky'],note:'Pair with Tanzee + Cattiva and your first base runs itself.'},
+  {no:'29',name:'Foxparks',els:['Fire'],cat:'early',rarity:'Common',role:'Early DPS · flamethrower · kindling',
+   work:[['Kindling',1]],
+   partner:'Huggy Fire',partnerText:'pick it up and use it as a <b>handheld flamethrower</b> — huge early damage, and it fires while gliding.',
+   loc:'Grasslands and hills near spawn, day or night.',coord:'starter zone',
+   recipe:R('rank'),passives:['Ferocious','Musclehead','Burly Body'],note:'Roll Ferocious for the flamethrower; it doubles as your first furnace worker.'},
+  {no:'23',name:'Tanzee',els:['Grass'],cat:'early',rarity:'Common',role:'Versatile early worker',
+   work:[['Planting',1],['Handiwork',1],['Gathering',1],['Lumbering',1],['Transporting',1]],
+   partner:'—',partnerText:'mirrors Lifmunk\'s versatility across five jobs — great early base coverage.',
+   loc:'Forest zones near the start, often at night.',coord:'starter forest',
+   recipe:R('rank'),passives:['Artisan','Serious','Lucky'],note:'One of the best early generalists before you unlock specialists.'},
+  {no:'17',name:'Pengullet',els:['Water','Ice'],cat:'early',rarity:'Common',role:'Early watering + cooling',
+   work:[['Watering',1],['Handiwork',1],['Cooling',1],['Transporting',1]],
+   partner:'Pengullet Cannonball',partnerText:'launch it as a projectile; also the best early <b>cooling + watering</b> combo for a food base.',
+   loc:'Shorelines and lakes near the first islands.',coord:'coastal / lakes',
+   recipe:R('rank'),passives:['Artisan','Serious'],note:'Indispensable early for running a refrigerator and watering crops.'},
+  {no:'6',name:'Vixy',els:['Neutral'],cat:'early',rarity:'Common',role:'Ranch Pal · free resources',
+   work:[['Gathering',1],['Farming',1]],
+   partner:'Dig Here!',partnerText:'assigned to a <b>Ranch</b>, it digs up Pal Spheres, Arrows and Gold Coins — constant early income.',
+   loc:'Grasslands near spawn; catch a couple immediately.',coord:'starter zone',
+   recipe:R('rank'),passives:['Lucky','Serious'],note:'Put one on the Ranch on day one; the sphere and coin drops pay for themselves.'},
+  {no:'51',name:'Nitewing',els:['Neutral'],cat:'early',rarity:'Common',role:'First flying mount',
+   work:[['Gathering',2]],
+   partner:'Beta Glider',partnerText:'an early <b>flying mount</b> that opens up the map long before the legendaries.',
+   loc:'Cliffs and highlands around the first regions.',coord:'highlands',
+   recipe:R('rank'),passives:['Swift','Runner','Nimble'],note:'Stack movement passives — it stays useful as a travel bird well into mid-game.'},
+  {no:'32',name:'Eikthyrdeer',els:['Neutral'],cat:'early',rarity:'Rare',role:'Early ground mount · double-jump',
+   work:[['Lumbering',2]],
+   partner:'Guardian of the Forest',partnerText:'a ground mount that can <b>double-jump</b> and speeds up tree-felling while ridden.',
+   loc:'Forests of the first island, usually at night.',coord:'starter forest',
+   recipe:R('rank'),passives:['Swift','Runner','Nimble'],note:'The double-jump makes early traversal and cliff climbs far easier.'},
+  {no:'22',name:'Daedream',els:['Dark'],cat:'early',rarity:'Common',role:'Early combat multiplier',
+   work:[['Handiwork',1],['Gathering',1],['Transporting',1]],
+   partner:'Daedream\'s Necklace',partnerText:'equipped as a <b>Pal Gear necklace</b>, it fights alongside your active Pal without taking a slot — effectively two attackers at once.',
+   loc:'Spawns at night; look for the glowing purple head across early zones.',coord:'nocturnal',
+   recipe:R('rank'),passives:['Ferocious','Musclehead'],note:'Run several early: their assist bullets won\'t drop a target below 1 HP, ideal for weakening catches.'},
+  {no:'33',name:'Direhowl',els:['Neutral'],cat:'early',rarity:'Common',role:'Fast early ground mount',
+   work:[['Gathering',1]],
+   partner:'—',partnerText:'a nimble, quick ground mount for scouting the first islands.',
+   loc:'Plains and dunes of the early map.',coord:'plains',
+   recipe:R('rank'),passives:['Swift','Runner','Nimble'],note:'Cheap speed before you can catch a proper flyer.'},
+
+  /* ---------- BASE WORKERS ---------- */
+  {no:'139',name:'Anubis',els:['Ground'],cat:'worker',rarity:'Epic',role:'Best all-round worker · fighter',
+   work:[['Handiwork',6],['Mining',6],['Transporting',4]],
+   partner:'Guardian of the Desert',partnerText:'adds the <b>Ground</b> element to your own attacks while active.',
+   loc:'Wild <b>Alpha</b> in the desert — wild-caught Anubis <b>always</b> rolls Earth Emperor, often faster than breeding.',coord:'desert · alpha',
+   recipe:R('special',null,null,'267 rank-pairs, or catch wild for guaranteed Earth Emperor'),
+   passives:['Artisan','Lucky','Legend','Ferocious'],note:'Base build: Artisan + Lucky. Combat build: Legend + Ferocious + its wild Earth Emperor.'},
+  {no:'182',name:'Solenne',els:['Dark','Neutral'],cat:'worker',rarity:'Rare',role:'Handiwork king (Lv8)',
+   work:[['Handiwork',8],['Gathering',4],['Transporting',2]],
+   partner:'—',partnerText:'the highest natural <b>Handiwork</b> in the game — runs every crafting bench at top speed.',
+   loc:'<b>World Tree</b> endgame region.',coord:'World Tree',
+   recipe:R('rank'),passives:['Artisan','Serious','Lucky'],note:'The endgame Handiwork specialist — condense it and stack a base aura for effective Lv10.'},
+  {no:'184',name:'Aegidron',els:['Dragon','Ground'],cat:'worker',rarity:'Epic',role:'Mining king (Lv8)',
+   work:[['Mining',8]],
+   partner:'—',partnerText:'the highest natural <b>Mining</b> — feeds all your ore and ingot production.',
+   loc:'<b>World Tree</b> region, as an Alpha.',coord:'World Tree · alpha',
+   recipe:R('rank'),passives:['Artisan','Serious','Lucky'],note:'Pair with dedicated transporters so mined ore doesn\'t pile on the ground.'},
+  {no:'183',name:'Renjishi',els:['Fire'],cat:'worker',rarity:'Rare',role:'Kindling king (Lv8)',
+   work:[['Kindling',8],['Handiwork',6],['Gathering',5],['Transporting',5]],
+   partner:'—',partnerText:'the only natural <b>Kindling Lv8</b> — the strongest furnace, forge and kitchen worker.',
+   loc:'<b>World Tree</b> NE corner as a <b>Lv78 Alpha</b> boss.',coord:'World Tree NE · Lv78',
+   recipe:R('rank'),passives:['Artisan','Serious','Lucky'],note:'Best-in-slot for any fire-powered facility once you reach the endgame.'},
+  {no:'194',name:'Dandilord',els:['Grass','Dark'],cat:'worker',rarity:'Epic',role:'Planting king (Lv8)',
+   work:[['Planting',8],['Handiwork',6],['Gathering',5],['Medicine',6]],
+   partner:'—',partnerText:'plants seed beds absurdly fast — the top natural <b>Planting</b> worker.',
+   loc:'<b>World Tree</b> NE corner as a <b>Lv78 Alpha</b>, just west of Renjishi.',coord:'World Tree NE · Lv78',
+   recipe:R('rank'),passives:['Artisan','Serious','Lucky'],note:'More planting speed means more crop cycles per day on a farming base.'},
+  {no:'193',name:'Silvance',els:['Grass'],cat:'worker',rarity:'Epic',role:'Medicine king (Lv8)',
+   work:[['Medicine',8],['Handiwork',6],['Planting',6],['Gathering',4]],
+   partner:'—',partnerText:'the top natural <b>Medicine Production</b> — keeps your whole workforce\'s SAN topped up.',
+   loc:'<b>World Tree</b> endgame region.',coord:'World Tree',
+   recipe:R('rank'),passives:['Artisan','Serious','Lucky'],note:'A Medicine specialist quietly prevents base-wide downtime from low sanity.'},
+  {no:'157',name:'Celesdir',els:['Neutral'],cat:'worker',rarity:'Rare',role:'Lumbering specialist',
+   work:[['Lumbering',7],['Gathering',4]],
+   partner:'—',partnerText:'top-tier <b>Lumbering</b>; its Noct form reaches Lv8 for the highest wood output.',
+   loc:'Forested endgame zones; the Noct variant is bred from it.',coord:'endgame forest',
+   recipe:R('rank'),passives:['Artisan','Serious','Lucky'],note:'Breed the Noct variant for Lumbering Lv8 — the wood king.'},
+  {no:'191',name:'Bastigor',els:['Ice'],cat:'worker',rarity:'Epic',role:'Cooling king (Lv8)',
+   work:[['Cooling',8],['Lumbering',6],['Mining',5]],
+   partner:'—',partnerText:'the top natural <b>Cooling</b> worker — essential for refrigeration and production bases.',
+   loc:'Endgame ice regions / tower-boss content.',coord:'endgame ice',
+   recipe:R('rank'),passives:['Artisan','Serious','Lucky'],note:'Add it to any production base that needs food storage running cold.'},
+  {no:'187',name:'Orserk',els:['Dragon','Electric'],cat:'worker',rarity:'Epic',role:'Electricity king (Lv8) · fighter',
+   work:[['Electricity',8],['Handiwork',3],['Transporting',4]],
+   partner:'—',partnerText:'the top natural <b>Generating Electricity</b> — powers a whole late base, and hits hard in combat too.',
+   loc:'Endgame regions; commonly obtained by breeding.',coord:'endgame',
+   recipe:R('rank'),passives:['Artisan','Serious','Legend'],note:'A rare double-duty pick — Electricity Lv8 at the base, Electric nuke in a fight.'},
+  {no:'121',name:'Jormuntide',els:['Dragon','Water'],cat:'worker',rarity:'Epic',role:'Watering king (Lv7)',
+   work:[['Watering',7]],
+   partner:'—',partnerText:'the best natural <b>Watering</b> worker for crops and water-powered structures.',
+   loc:'Large lakes and rivers in mid-to-late regions.',coord:'lakes',
+   recipe:R('rank'),passives:['Artisan','Serious','Lucky'],note:'Its Ignis variant swaps to Kindling Lv7 — two furnaces from one species line.'},
+  {no:'121B',name:'Jormuntide Ignis',els:['Dragon','Fire'],cat:'worker',rarity:'Epic',role:'Kindling Lv7 · strong fighter',
+   work:[['Kindling',7]],
+   partner:'—',partnerText:'both a strong Fire combat Pal <b>and</b> the best accessible Kindling worker — huge value.',
+   loc:'Volcanic zones; often bred from Jormuntide.',coord:'volcano',
+   recipe:R('special',null,null,'variant of Jormuntide — check calculator for the exact combo'),
+   passives:['Artisan','Ferocious','Legend'],note:'If roster space is tight, one Pal that fights and powers furnaces is incredible value.'},
+  {no:'134',name:'Wumpo',els:['Ice'],cat:'worker',rarity:'Rare',role:'Transporting specialist',
+   work:[['Transporting',6],['Lumbering',5],['Cooling',5],['Handiwork',3]],
+   partner:'—',partnerText:'top-tier <b>Transporting</b> — the quiet fix for the bottleneck that stalls every other worker.',
+   loc:'Snow and mountain regions.',coord:'snowfields',
+   recipe:R('rank'),passives:['Swift','Artisan','Serious'],note:'Weak transport chokes a base; treat it as a real role, not an afterthought.'},
+  {no:'186',name:'Lyleen',els:['Grass'],cat:'worker',rarity:'Epic',role:'Planting + medicine generalist',
+   work:[['Planting',7],['Gathering',6],['Handiwork',5],['Medicine',5]],
+   partner:'—',partnerText:'a strong four-job worker; its Noct form pushes Medicine to Lv7.',
+   loc:'Grassland / jungle endgame zones.',coord:'endgame grass',
+   recipe:R('rank'),passives:['Artisan','Serious','Lucky'],note:'A flexible high-level worker before you collect the single-job kings.'},
+  {no:'158',name:'Astegon',els:['Dragon','Dark'],cat:'worker',rarity:'Epic',role:'Mining Lv7 · ore-boost mount',
+   work:[['Mining',7],['Handiwork',3]],
+   partner:'Sky Terror',partnerText:'while you <b>ride it and mine</b>, it doubles ore drops — the best ore-farming quality-of-life in the game.',
+   loc:'Deep underground / dungeon regions late-game.',coord:'underground',
+   recipe:R('rank'),passives:['Artisan','Serious','Swift'],note:'Mount it before you start swinging at nodes — the bonus only applies while ridden.'},
+  {no:'107',name:'Digtoise',els:['Ground'],cat:'worker',rarity:'Rare',role:'Mining-ride specialist',
+   work:[['Mining',4]],
+   partner:'Rolling Drill',partnerText:'ride it into a rock face and its drill <b>shreds ore nodes</b> far faster than hand-mining.',
+   loc:'Deserts and rocky beaches.',coord:'desert / rocky',
+   recipe:R('rank'),passives:['Swift','Serious'],note:'Trap: it\'s only Mining Lv4 as a stationed worker — the real value is the ride drill.'},
+  {no:'96',name:'Beakon',els:['Electric'],cat:'worker',rarity:'Rare',role:'Accessible electricity + transport',
+   work:[['Electricity',4],['Transporting',5],['Gathering',2]],
+   partner:'—',partnerText:'a solid mid-game power source before you can catch Orserk.',
+   loc:'Stormy plains and highlands.',coord:'highlands',
+   recipe:R('rank'),passives:['Artisan','Serious'],note:'Good electricity + transport bridge until the Lv8 specialists come online.'},
+  {no:'52',name:'Tombat',els:['Dark'],cat:'worker',rarity:'Rare',role:'Best early miner · nocturnal',
+   work:[['Mining',3],['Gathering',2],['Transporting',2]],
+   partner:'—',partnerText:'gives you real <b>Mining</b> earlier than anything else, and works <b>at night</b> while others sleep.',
+   loc:'Caves and underground across the early map.',coord:'caves',
+   recipe:R('rank'),passives:['Artisan','Serious'],note:'The best early base worker — mines, gathers and hauls, and keeps the base running overnight.'},
+  {no:'18',name:'Penking',els:['Water','Ice'],cat:'worker',rarity:'Rare',role:'Early five-job generalist',
+   work:[['Watering',2],['Handiwork',2],['Mining',3],['Cooling',2],['Transporting',3]],
+   partner:'—',partnerText:'covers watering, handiwork, mining, cooling and transporting in one Pal.',
+   loc:'Cold coastlines and the first Sealed Realm area.',coord:'coastal',
+   recipe:R('rank'),passives:['Artisan','Serious'],note:'Two or three of these keep an early base ticking without dedicated specialists.'},
+  {no:'147',name:'Prunelia',els:['Grass','Dark'],cat:'worker',rarity:'Rare',role:'Crop-yield booster',
+   work:[['Planting',3],['Medicine',3],['Gathering',2]],
+   partner:'Prayer for Abundant Harvest',partnerText:'its partner skill directly <b>boosts base crop yields</b> — a must for large food networks.',
+   loc:'Endgame grass / dark biomes.',coord:'endgame',
+   recipe:R('rank'),passives:['Artisan','Serious','Lucky'],note:'Station it at a farming base for a flat increase to everything you harvest.'},
+  {no:'170',name:'Lapure',els:['Neutral'],cat:'worker',rarity:'Common',role:'Party cooldowns · handiwork',
+   work:[['Handiwork',6],['Gathering',5]],
+   partner:'Long-Sleeved Hurray',partnerText:'reduces the partner-skill <b>cooldown</b> of your other party Pals — spam skills more often.',
+   loc:'Breedable via rank-combo; check the interactive map for wild spawns. Weak to Dark.',coord:'see map',
+   recipe:R('rank'),passives:['Artisan','Lucky','Serious'],note:'Utility support in the party; a capable Handiwork Lv6 worker on the base.'},
+
+  /* ---------- COMBAT & BOSS ---------- */
+  {no:'199',name:'Necromus',els:['Dark'],cat:'combat',rarity:'Legendary',role:'S+ Dark nuke · anti-Neutral',
+   work:[['Lumbering',6],['Mining',6]],
+   partner:'Dark Knight of the Abyss',partnerText:'a monstrous 145 base attack; while mounted you can <b>double-jump to dodge</b> instead of tanking hits.',
+   loc:'<b>Desert biome at night</b> — the dark twin of Paladius. Bring a Dark/Dragon Pal.',coord:'desert · night',
+   recipe:R('self',null,null,'legendary — catch one, breed two for passives'),
+   passives:['Legend','Ferocious','Swift','Musclehead'],note:'Your Dark answer for Neutral mobs and a top pure-damage pick for boss teams.'},
+  {no:'198',name:'Paladius',els:['Neutral'],cat:'combat',rarity:'Legendary',role:'S+ defensive anchor',
+   work:[['Lumbering',6],['Mining',6]],
+   partner:'Holy Knight of the Firmament',partnerText:'a defensive powerhouse with sustained AoE; <b>triple-jump</b> while mounted to evade and traverse.',
+   loc:'<b>Desert biome during the day</b> — the light twin of Necromus. Come prepared for the heat.',coord:'desert · day',
+   recipe:R('self',null,null,'legendary — catch one, breed two for passives'),
+   passives:['Legend','Burly Body','Ferocious','Swift'],note:'The team\'s living anchor — soaks damage while your nukes work.'},
+  {no:'200',name:'Frostallion',els:['Ice'],cat:'combat',rarity:'Legendary',role:'S+ Ice mount · Dragon-slayer',
+   work:[['Cooling',7]],
+   partner:'Ice Steed',partnerText:'flying mount that converts <b>every hit you land while riding into Ice damage</b> — shreds Dragon-types.',
+   loc:'Summit of the snow region — a legendary boss. Bring Fire damage and cold-resist armor.',coord:'snow summit',
+   recipe:R('self',null,null,'legendary — catch one, breed two for passives'),
+   passives:['Legend','Ferocious','Swift','Burly Body'],note:'The definitive Ice answer to Jetragon and every other Dragon boss.'},
+  {no:'200B',name:'Frostallion Noct',els:['Dark'],cat:'combat',rarity:'Legendary',role:'Dark legendary variant',
+   work:[['Gathering',7]],
+   partner:'Dark Steed',partnerText:'the Dark-element take on Frostallion — flying mount that adds Dark damage to your attacks.',
+   loc:'<b>Breed-only</b> variant — pair Frostallion with a Dark Pal (Helzephyr line).',coord:'breed only',
+   recipe:R('special',null,null,'Frostallion + Helzephyr — verify on a live calculator'),
+   passives:['Legend','Ferocious','Swift','Lucky'],note:'Dark coverage in a legendary mount chassis; grind passives by self-breeding after the first.'},
+  {no:'189',name:'Shadowbeak',els:['Dark'],cat:'combat',rarity:'Epic',role:'Easy-to-use all-rounder',
+   work:[['Gathering',2]],
+   partner:'Beak of Destruction',partnerText:'a fast, high-damage Dark flyer — the most forgiving top-tier combat pick to pilot.',
+   loc:'Endgame Dark regions and sanctuaries.',coord:'endgame',
+   recipe:R('rank'),passives:['Legend','Ferocious','Swift','Musclehead'],note:'If you want one strong fighter that\'s simple to use, start here.'},
+  {no:'195B',name:'Bellanoir Libero',els:['Dark'],cat:'combat',rarity:'Legendary',role:'S+ boss-killer caster',
+   work:[['Handiwork',6],['Medicine',7],['Transporting',4]],
+   partner:'—',partnerText:'the ultimate <b>boss-killer</b> — multi-hit Dark spells with teleport tracking that shred raid HP bars.',
+   loc:'<b>Raid boss</b> — summon Bellanoir at a Summoning Altar with a Slab (Ultra slab for Libero).',coord:'raid · slab',
+   recipe:R('raid',null,null,'defeat the raid for an egg; self-breed to roll passives'),
+   passives:['Legend','Ferocious','Swift','Lucky'],note:'Built for one thing — overwhelming damage in raids and Tower-boss fights.'},
+  {no:'137B',name:'Blazamut Ryu',els:['Dragon','Fire'],cat:'combat',rarity:'Epic',role:'Fire coverage · raid drop',
+   work:[['Kindling',6],['Mining',7]],
+   partner:'—',partnerText:'the Dragon/Fire raid variant of Blazamut — your Fire pick with strong mining utility on the side.',
+   loc:'<b>Raid boss</b> — summon with a Blazamut Ryu Slab.',coord:'raid · slab',
+   recipe:R('raid',null,null,'raid egg reward; self-breed for passives'),
+   passives:['Legend','Ferocious','Lucky','Swift'],note:'Carry it as your Fire answer in a coverage team; doubles as a Mining Lv7 worker.'},
+  {no:'201',name:'Neptilius',els:['Water'],cat:'combat',rarity:'Legendary',role:'Water legendary',
+   work:[['Watering',7]],
+   partner:'—',partnerText:'a late Water legendary with heavy damage and top Watering utility for a base.',
+   loc:'Late-game water regions / raid content.',coord:'endgame water',
+   recipe:R('self',null,null,'legendary — catch/earn one, breed two for passives'),
+   passives:['Legend','Ferocious','Swift','Lucky'],note:'Your Water pick for element coverage against Fire and Ground bosses.'},
+  {no:'122',name:'Suzaku',els:['Fire'],cat:'combat',rarity:'Epic',role:'Accessible Fire fighter',
+   work:[['Kindling',5]],
+   partner:'—',partnerText:'a strong, catchable Fire flyer — good coverage before the raid legendaries.',
+   loc:'Volcanic and desert late-game zones. The Aqua variant swaps to Water.',coord:'volcano',
+   recipe:R('rank'),passives:['Legend','Ferocious','Musclehead','Swift'],note:'A reliable non-legendary Fire option you can actually catch in the wild.'},
+  {no:'185',name:'Grizzbolt',els:['Electric'],cat:'combat',rarity:'Epic',role:'Minigun gunner · electricity',
+   work:[['Electricity',5],['Handiwork',4],['Transporting',5]],
+   partner:'Ampli-Gearbox',partnerText:'strap a <b>minigun</b> to it and it becomes one of the best gunner-style combat partners in the game.',
+   loc:'Electric highlands / a Tower-boss partner Pal.',coord:'highlands',
+   recipe:R('rank'),passives:['Ferocious','Musclehead','Legend'],note:'A fun, sustained-DPS Electric pick that also powers your base.'},
+  {no:'150',name:'Omascul',els:['Dark'],cat:'combat',rarity:'Common',role:'Party XP aura · combat',
+   work:[['Gathering',5]],
+   partner:'Masquerade Dance',partnerText:'increases XP earned by every party Pal by <b>40–80%</b> — the best leveling accelerator.',
+   loc:'Frozen Coral Hill on <b>Feybreak</b>; Alpha at the marker, or a Dark Egg hatch.',coord:'-1183, -1490',
+   recipe:R('pair','Arsox','Kingpaca','also: Tanzee+Blazamut · Rooby+Neptilius'),
+   passives:['Legend','Ferocious','Swift','Lucky'],note:'Its value is the XP aura, so keep it alive; add the combat stack only if you also fight with it.'},
+
+  /* ---------- MOUNTS / EXPLORATION ---------- */
+  {no:'202',name:'Jetragon',els:['Dragon'],cat:'mount',rarity:'Legendary',role:'Fastest flying mount',
+   work:[['Gathering',8]],
+   partner:'Aerial Missile',partnerText:'ride as a flying mount and rapid-fire a missile launcher — but you <b>can\'t use weapons</b> while mounted.',
+   loc:'<b>Alpha only</b> — Sunreach / Sky Island, a Lv70 wild boss. Bring Ice damage + heat-resist armor.',coord:'-553, -1332',
+   recipe:R('self',null,null,'legendary — catch one, breed two for passives'),
+   passives:['Swift','Runner','Nimble','Legend'],note:'Pure speed build — weapons are locked while riding, so stack movement, skip combat rolls.'},
+  {no:'196',name:'Xenolord',els:['Dark','Dragon'],cat:'mount',rarity:'Epic',role:'2nd-fastest mount · rides + fights',
+   work:[['Gathering',2]],
+   partner:'Meteor Wings',partnerText:'flying mount whose speed scales with Condensation; buffs party weapon-Pals\' partner-skill damage <b>20–50%</b>, and you keep weapons while riding.',
+   loc:'<b>Raid boss</b> — summon at an Altar with a Xenolord Slab (fragments in Feybreak dungeons). Altar unlocks Tech Lv33.',coord:'raid · slab',
+   recipe:R('raid',null,null,'raid egg reward; self-breed for passives'),
+   passives:['Legend','Swift','Ferocious','Burly Body'],note:'Comes with Invader + Otherworldly Cells; add Legend + Swift for the best all-round mount.'},
+  {no:'190',name:'Selyne',els:['Dark','Neutral'],cat:'mount',rarity:'Epic',role:'Flying mount · combat · Lv7 handiwork',
+   work:[['Handiwork',7],['Medicine',6],['Transporting',3]],
+   partner:'Celestial Darkness',partnerText:'ride as a flying mount; boosts your <b>Dark and Neutral</b> attack damage.',
+   loc:'Spawns only during a <b>Meteorite Event on Sakurajima</b>, by the meteorite. Bring Ultra/Legendary Spheres + a Ring of Mercy.',coord:'Sakurajima · meteorite',
+   recipe:R('pair','Paladius','Lunaris','meteorite catch is often faster than the event wait'),
+   passives:['Legend','Ferocious','Swift','Lucky'],note:'Strong combat mount and a rare Handiwork Lv7 worker — a combat stack serves both jobs.'}
+];
+
+const gradeLabel={t3:'TIER 3',t2:'TIER 2',util:'UTILITY'};
+document.getElementById('plib').innerHTML=PASSIVES.map(p=>`<div class="prow"><div class="pn">${p.n}<span class="grade ${p.g}">${gradeLabel[p.g]}</span></div><div class="pe">${p.e}</div></div>`).join('');
+document.getElementById('palCount').textContent=PALS.length;
+
+const T3=new Set(['Legend','Ferocious','Swift','Lucky','Artisan']);
+function passiveChips(list){return list.map(p=>{const m=PASSIVES.find(x=>x.n===p);const eff=m?m.e.replace(/"/g,'&quot;'):'';return `<span class="pchip ${T3.has(p)?'legendary':''}" tabindex="0" data-eff="${eff}" title="${eff}">${p}</span>`;}).join('');}
+function workChips(list){if(!list||!list.length)return '';return list.slice(0,4).map(([j,l])=>`<span class="wchip ${l>=8?'hi':''}">${j}<b>${l}</b></span>`).join('');}
+function recipeMini(p){
+  if(p.recipe.type==='pair'){
+    return `<div class="recipe-mini"><span class="pair">${p.recipe.a}<span class="plus">+</span>${p.recipe.b}</span>${p.recipe.note?`<div class="alt">${p.recipe.note}</div>`:''}</div>`;
+  }
+  const tagmap={self:'self-only breed',raid:'raid · altar summon',special:'special / rank breed',rank:'rank breed'};
+  return `<div class="recipe-mini"><span class="tag-self">${tagmap[p.recipe.type]||'rank breed'}</span>${p.recipe.note?`<div class="alt">${p.recipe.note}</div>`:'<div class="alt">many valid pairs — use a calculator to find the cheapest from Pals you own</div>'}</div>`;
+}
+const sel=document.getElementById('target');
+const grouped={};PALS.forEach(p=>{(grouped[p.cat]=grouped[p.cat]||[]).push(p);});
+sel.innerHTML=Object.entries(CATS).map(([k,v])=>`<optgroup label="${v.label}">${(grouped[k]||[]).map(p=>`<option value="${p.name}">${p.name} · #${p.no}</option>`).join('')}</optgroup>`).join('');
+const benchOut=document.getElementById('benchOut');
+function renderBench(name){
+  const p=PALS.find(x=>x.name===name);if(!p)return;
+  let recipeBlock;
+  if(p.recipe.type==='pair'){
+    recipeBlock=`<div class="recipe">
+      <div class="parent"><div class="role">Parent A</div><div class="who">${p.recipe.a}</div></div>
+      <div class="op">+</div>
+      <div class="parent"><div class="role">Parent B</div><div class="who">${p.recipe.b}</div></div>
+      <div class="op">=</div>
+      <div class="parent result"><div class="role">Hatch</div><div class="who">${p.name}</div></div></div>`;
+  } else {
+    const tagmap={self:'Self-only legendary — catch one, then breed two together',raid:'Raid boss — summon at an Altar with its Slab',special:'Special / rank breed',rank:'Rank breed — hundreds of valid pairs'};
+    recipeBlock=`<div class="recipe"><div class="parent result" style="flex-basis:100%"><div class="role">Route</div><div class="who" style="font-size:16px;color:var(--amber)">${tagmap[p.recipe.type]}</div></div></div>`;
+  }
+  benchOut.innerHTML=`<div class="bench-target">${palPortrait(p)}<div>
+      <div class="bt-name">${p.name}</div>
+      <div class="bt-sub">#${p.no} · ${p.role}</div>
+      <div class="d-chips" style="margin-top:8px">${p.els.map(elChip).join('')}<span class="rarity r-${p.rarity}">${p.rarity}</span></div>
+    </div></div>
+    ${recipeBlock}
+    ${p.recipe.note?`<div class="alt-line"><b>Note:</b> ${p.recipe.note}</div>`:''}
+    <div class="alt-line" style="margin-top:10px"><b>Partner skill:</b> ${p.partner!=='—'?`<b style="color:var(--amber)">${p.partner}</b> — `:''}${p.partnerText}</div>
+    ${p.work&&p.work.length?`<div class="alt-line" style="margin-top:10px"><b>Work:</b> ${workChips(p.work)}</div>`:''}
+    <div class="alt-line" style="margin-top:10px"><b>Passive target:</b> ${passiveChips(p.passives)}</div>
+    <div class="alt-line" style="margin-top:8px"><b>Source it:</b> ${p.loc} <span class="mono">${p.coord}</span></div>
+    <div class="alt-line" style="margin-top:10px">${p.note}</div>
+    <div style="margin-top:14px"><a href="#guide" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--amber);text-decoration:none;border-bottom:1px solid var(--amber-dim)">passive breeding guide for ${p.name} \u2193</a></div>`;
+}
+function renderGuide(pal){
+  const box=document.getElementById('guideDynamic');
+  if(!box||!pal)return;
+  const ps=pal.passives.slice(0,4);
+  const isLeg=pal.rarity==='Legendary';
+  const hasLegend=ps.includes('Legend');
+  const chip=(name,accent)=>`<span class="gchip ${name==='Legend'?'leg':(accent?'win':'')}">${name}</span>`;
+  const cross=(left,right,res)=>`<span class="parentset">${left.map(n=>chip(n,false)).join('')}</span><span class="arrow">×</span><span class="parentset">${chip(right,false)}</span><span class="arrow">→</span><span class="result">${res.map(n=>chip(n,true)).join('')}</span>`;
+  const rungs=[];
+  if(ps.length>=2)rungs.push({gen:'Gen 1 · isolate two',html:cross([ps[0]],ps[1],[ps[0],ps[1]]),note:'Two clean 1-passive parents. Hatch until a child inherits both, then save it as your next parent.'});
+  if(ps.length>=3)rungs.push({gen:'Gen 2 · add a third',html:cross([ps[0],ps[1]],ps[2],[ps[0],ps[1],ps[2]]),note:(ps[2]==='Legend'?'Legend must come from a Legendary parent. ':'')+'Pool is 3 — still under the cap. Keep the best hatchling.'});
+  if(ps.length>=4)rungs.push({gen:'Gen 3 · complete the set',html:cross([ps[0],ps[1],ps[2]],ps[3],ps.slice(0,4)),note:(ps[3]==='Legend'?'Legend must come from a Legendary parent. ':'')+'Pool is exactly four — hatch until one child inherits all four. That\u2019s your template.'});
+  let src;
+  switch(pal.recipe.type){
+    case 'self':src=`<b>${pal.name}</b> is a self-only legendary${hasLegend?', and a wild-caught one already carries Legend':''}. Catch one, then breed two ${pal.name}s together — same-species pairing keeps the species while you roll the remaining passives.`;break;
+    case 'raid':src=`<b>${pal.name}</b> hatches from a raid egg (Altar + Slab). Hatch it first, then breed two together to roll passives — the species is preserved.`;break;
+    case 'pair':src=`<b>${pal.name}</b> breeds from <b>${pal.recipe.a} + ${pal.recipe.b}</b>. Put your target passives on those two parents, or build a passive donor and carry the traits in through the pair.`;break;
+    default:src=`<b>${pal.name}</b> is a rank-breed target with many valid pairs. Build a four-passive donor on an easy Pal, then follow the chart (the Bench above) to ${pal.name} — passives carry across species.`;
+  }
+  if(hasLegend&&!isLeg)src+=` Because Legend never rolls at random, a Legendary must sit somewhere in the chain to supply it.`;
+  box.innerHTML=`
+    <div class="guide-target">
+      <div class="gt-head"><span class="gt-label">Guide tuned for</span> <span class="gt-name">${pal.name}</span> <span class="gt-no">#${pal.no}</span></div>
+      <div class="gt-pass"><span class="gt-label">Target</span> ${passiveChips(ps)}</div>
+      <div class="gt-src">${src}</div>
+    </div>
+    <div class="ladder">
+      <h5>The ladder for ${pal.name}</h5>
+      <div class="lsub">Building ${ps.join(' · ')} — keep the best hatchling each generation.</div>
+      <div class="lrungs">${rungs.map(r=>`<div class="lrung"><div class="gen">${r.gen}</div><div class="cross">${r.html}</div><div class="lnote">${r.note}</div></div>`).join('')}</div>
+    </div>`;
+}
+sel.addEventListener('change',e=>{renderBench(e.target.value);renderGuide(PALS.find(p=>p.name===e.target.value));});
+renderBench(PALS[0].name);
+renderGuide(PALS[0]);
+
+/* ---------- passive popover (works on tap + hover) ---------- */
+(function(){
+  const pop=document.getElementById('pchipPop');
+  function hide(){pop.classList.remove('show');}
+  document.addEventListener('click',e=>{
+    const chip=e.target.closest('.pchip');
+    if(!chip){hide();return;}
+    const eff=chip.getAttribute('data-eff');
+    if(!eff){hide();return;}
+    pop.innerHTML='<b>'+chip.textContent+'</b> — '+eff;
+    pop.classList.add('show');
+    const r=chip.getBoundingClientRect();
+    const pw=Math.min(280,window.innerWidth-24);
+    pop.style.width=pw+'px';
+    let left=r.left+r.width/2-pw/2;
+    left=Math.max(12,Math.min(left,window.innerWidth-pw-12));
+    pop.style.left=left+'px';
+    pop.style.top=(r.bottom+8)+'px';
+    if(r.bottom+8+pop.offsetHeight>window.innerHeight-8){pop.style.top=(r.top-pop.offsetHeight-8)+'px';}
+    e.stopPropagation();
+  });
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')hide();});
+  window.addEventListener('scroll',hide,true);
+  window.addEventListener('resize',hide);
+})();
+
+/* ---------- team coverage planner ---------- */
+const COUNTER={Grass:'Fire',Ice:'Fire',Fire:'Water',Water:'Electric',Electric:'Ground',Ground:'Grass',Dragon:'Ice',Dark:'Dragon',Neutral:'Dark'};
+const ALL_EL=['Neutral','Fire','Water','Electric','Grass','Ground','Ice','Dragon','Dark'];
+const KEY_BOSS=new Set(['Dragon','Dark','Fire']);
+const teamPicks=document.getElementById('teamPicks');
+const covOptions='<option value="">— empty —</option>'+Object.entries(CATS).map(([k,v])=>`<optgroup label="${v.label}">${(grouped[k]||[]).map(p=>`<option value="${p.name}">${p.name}</option>`).join('')}</optgroup>`).join('');
+teamPicks.innerHTML=[0,1,2,3,4].map(i=>`<div class="pslot"><label>Slot ${i+1}</label><select class="psel">${covOptions}</select></div>`).join('');
+const covOut=document.getElementById('covOut');
+function renderCoverage(){
+  const chosen=[...teamPicks.querySelectorAll('.psel')].map(s=>s.value).filter(Boolean);
+  const team=chosen.map(n=>PALS.find(p=>p.name===n)).filter(Boolean);
+  if(!team.length){covOut.innerHTML='<div class="cov-empty">Select up to 5 Pals above to map your team\u2019s damage against every element and expose the gaps before a boss fight.</div>';return;}
+  const S=new Set();team.forEach(p=>p.els.forEach(e=>S.add(e)));
+  const teamEls=[...S];
+  const cells=ALL_EL.map(enemy=>{
+    const need=COUNTER[enemy];const covered=S.has(need);const key=KEY_BOSS.has(enemy);
+    return `<div class="cov-cell ${covered?'ok':'gap'} ${key?'key':''}">
+      <div>${elChip(enemy)}</div>
+      <div class="ce-need">${covered?'countered by':'need a'} <b>${need}</b> Pal</div>
+      <div class="ce-status">${covered?'\u2713 super-effective':'\u2717 no counter'}</div></div>`;
+  }).join('');
+  const gaps=ALL_EL.filter(en=>!S.has(COUNTER[en]));
+  const keyGaps=gaps.filter(g=>KEY_BOSS.has(g));
+  let verdict;
+  if(!gaps.length)verdict='<b>Full coverage.</b> This team can hit every element super-effectively.';
+  else{
+    verdict=`<b>${gaps.length} gap${gaps.length>1?'s':''}:</b> no super-effective answer to ${gaps.join(', ')}.`;
+    if(keyGaps.length)verdict+=`<span class="warn">Priority \u2014 common boss elements: ${keyGaps.map(g=>g+' (bring a '+COUNTER[g]+' Pal)').join('; ')}.</span>`;
+  }
+  covOut.innerHTML=`<div class="team-els"><span class="tel-label">Team brings</span> ${teamEls.map(elChip).join('')}</div>
+    <div class="cov-grid">${cells}</div>
+    <div class="verdict">${verdict}</div>
+    <div class="cov-note">Damage element = the Pal\u2019s type; super-effective hits deal \u00d71.5 and take half back. Dual-type Pals count for both. Dragon, Dark and Fire are the most common boss elements, so they\u2019re highlighted.</div>`;
+}
+teamPicks.addEventListener('change',renderCoverage);
+renderCoverage();
+
+/* ---------- base-staffing templates ---------- */
+const TEMPLATES=[
+  {name:'Starter Base',tier:'Pre-Lv20',purpose:'Keep your first base self-sufficient before specialists unlock.',
+   rows:[['Mining','Tombat'],['Generalist','Tanzee'],['Generalist','Lifmunk'],['Water + Cooling','Pengullet'],['Kindling','Foxparks'],['Ranch income','Vixy']]},
+  {name:'Mining Base',tier:'Ore & ingots',purpose:'Maximise ore throughput and keep the furnaces fed.',
+   rows:[['Mining 8','Aegidron'],['Handiwork 6','Anubis'],['Transport 6','Wumpo'],['Electricity 8','Orserk']],
+   tip:'Ride Astegon or Digtoise while you mine nodes for far faster / doubled ore.'},
+  {name:'Food & Farming Base',tier:'Crops & cooking',purpose:'A self-feeding farm with fridge and sanity upkeep.',
+   rows:[['Planting 8','Dandilord'],['Watering 7','Jormuntide'],['Medicine 8','Silvance'],['Cooling 8','Bastigor'],['Crop yield','Prunelia'],['Ranch','Vixy']]},
+  {name:'Production / Forge Base',tier:'Crafting hub',purpose:'One base that crafts, smelts and powers itself.',
+   rows:[['Handiwork 8','Solenne'],['Kindling 8','Renjishi'],['Mining 8','Aegidron'],['Electricity 8','Orserk'],['Transport 6','Wumpo'],['Cooling 8','Bastigor']]},
+  {name:'Logging Base',tier:'Wood supply',purpose:'Dedicated lumber output for big build projects.',
+   rows:[['Lumbering 7','Celesdir'],['Transport 6','Wumpo'],['Handiwork 6','Anubis']],
+   tip:'Breed Celesdir Noct for Lumbering Lv8 \u2014 the highest wood output in the game.'}
+];
+const tGrid=document.getElementById('templatesGrid');
+tGrid.innerHTML=TEMPLATES.map(t=>`<div class="tmpl-card">
+  <div class="tmpl-head"><h5>${t.name}</h5><span class="tmpl-tier">${t.tier}</span></div>
+  <p class="tmpl-purpose">${t.purpose}</p>
+  <div class="tmpl-rows">${t.rows.map(([job,pal])=>`<div class="tmpl-row"><span class="tmpl-job">${job}</span><span class="tmpl-pal">${pal}</span></div>`).join('')}</div>
+  ${t.tip?`<div class="tmpl-tip">${t.tip}</div>`:''}</div>`).join('');
+
+/* ---------- scroll-spy: highlight the active section in the sticky nav ---------- */
+(function(){
+  const links=[...document.querySelectorAll('.subnav a')];
+  const map={};links.forEach(a=>map[a.getAttribute('href').slice(1)]=a);
+  const secs=Object.keys(map).map(id=>document.getElementById(id)).filter(Boolean);
+  if(!('IntersectionObserver' in window)||!secs.length)return;
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const a=map[en.target.id];if(a){a.classList.add('active');a.scrollIntoView({block:'nearest',inline:'center'});}
+      }
+    });
+  },{rootMargin:'-45% 0px -50% 0px',threshold:0});
+  secs.forEach(s=>obs.observe(s));
+})();
+</script>
+<button class="install-pill" id="installPill" aria-label="Install app">⤓ Install app</button>
+<div class="ios-hint" id="iosHint"><span class="x" id="iosX" role="button" aria-label="Dismiss">✕</span>Install this app: tap <b>Share</b>, then <b>Add to Home Screen</b>.</div>
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){});});}
+(function(){
+  var deferred=null;
+  var pill=document.getElementById('installPill');
+  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;pill.classList.add('show');});
+  pill.addEventListener('click',function(){if(!deferred)return;deferred.prompt();deferred.userChoice.then(function(){deferred=null;pill.classList.remove('show');});});
+  window.addEventListener('appinstalled',function(){pill.classList.remove('show');});
+  var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  var standalone=window.navigator.standalone||window.matchMedia('(display-mode: standalone)').matches;
+  var dismissed=false; try{dismissed=localStorage.getItem('iosHintDismissed')==='1';}catch(_){}
+  if(isIOS && !standalone && !dismissed){
+    var h=document.getElementById('iosHint'); h.classList.add('show');
+    document.getElementById('iosX').addEventListener('click',function(){h.classList.remove('show');try{localStorage.setItem('iosHintDismissed','1');}catch(_){}});
+  }
+})();
+</script>
+</body>
+</html>
