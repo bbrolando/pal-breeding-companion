@@ -299,6 +299,7 @@ a.tmpl-pal:hover{border-color:var(--paldium)}
   </div>
   <nav class="subnav" id="subnav" aria-label="Sections">
     <a href="#bench">Bench</a>
+    <a href="#roster">Roster</a>
     <a href="#coverage">Coverage</a>
     <a href="#templates">Bases</a>
     <a href="#protocol">Protocol</a>
@@ -335,8 +336,14 @@ a.tmpl-pal:hover{border-color:var(--paldium)}
     </div>
   </section>
 
+  <section id="roster">
+    <div class="sec-head"><span class="sec-num">02</span><h3>Specimen Roster</h3><span class="hint">every Pal · filter by role</span></div>
+    <div class="tabs" id="rosterTabs"></div>
+    <div class="roster" id="rosterGrid"></div>
+  </section>
+
   <section id="coverage">
-    <div class="sec-head"><span class="sec-num">02</span><h3>Team Coverage Planner</h3><span class="hint">pick up to 5 → find the gaps</span></div>
+    <div class="sec-head"><span class="sec-num">03</span><h3>Team Coverage Planner</h3><span class="hint">pick up to 5 → find the gaps</span></div>
     <div class="planner">
       <div class="team-picks" id="teamPicks"></div>
       <div class="cov-out" id="covOut"></div>
@@ -344,12 +351,12 @@ a.tmpl-pal:hover{border-color:var(--paldium)}
   </section>
 
   <section id="templates">
-    <div class="sec-head"><span class="sec-num">03</span><h3>Base-Staffing Templates</h3><span class="hint">one-tap worker loadouts</span></div>
+    <div class="sec-head"><span class="sec-num">04</span><h3>Base-Staffing Templates</h3><span class="hint">one-tap worker loadouts</span></div>
     <div class="templates" id="templatesGrid"></div>
   </section>
 
   <section id="protocol">
-    <div class="sec-head"><span class="sec-num">04</span><h3>Breeding Protocol</h3><span class="hint">the rules that never change</span></div>
+    <div class="sec-head"><span class="sec-num">05</span><h3>Breeding Protocol</h3><span class="hint">the rules that never change</span></div>
     <div class="protocol">
       <div class="pcard">
         <div class="step">SETUP</div><h5>Farm &amp; Cake</h5>
@@ -378,7 +385,7 @@ a.tmpl-pal:hover{border-color:var(--paldium)}
   </section>
 
   <section id="guide">
-    <div class="sec-head"><span class="sec-num">05</span><h3>Breeding for Passives</h3><span class="hint">the ladder method, step by step</span></div>
+    <div class="sec-head"><span class="sec-num">06</span><h3>Breeding for Passives</h3><span class="hint">the ladder method, step by step</span></div>
 
     <p class="guide-intro">A hatchling's passives are drawn from the <b>combined pool</b> of both parents' passives (any duplicate is merged into one), and any slots left empty may then be filled with <b>random</b> passives from the whole library — including bad ones. Everything below is about controlling that pool and driving toward a full four-passive inherit. There are only ever <b>4 slots</b>, and that cap never changes. The steps are universal; the ladder underneath adapts to whichever Pal you pick in the Breeding Bench dropdown up top.</p>
 
@@ -402,7 +409,7 @@ a.tmpl-pal:hover{border-color:var(--paldium)}
   </section>
 
   <section id="passives">
-    <div class="sec-head"><span class="sec-num">06</span><h3>Passive Library</h3><span class="hint">tap any chip for its effect</span></div>
+    <div class="sec-head"><span class="sec-num">07</span><h3>Passive Library</h3><span class="hint">tap any chip for its effect</span></div>
     <div class="plib" id="plib"></div>
   </section>
 
@@ -700,7 +707,45 @@ const PALS=[
    partner:'Celestial Darkness',partnerText:'ride as a flying mount; boosts your <b>Dark and Neutral</b> attack damage.',
    loc:'Spawns only during a <b>Meteorite Event on Sakurajima</b>, by the meteorite. Bring Ultra/Legendary Spheres + a Ring of Mercy.',coord:'Sakurajima · meteorite',
    recipe:R('pair','Paladius','Lunaris','meteorite catch is often faster than the event wait'),
-   passives:['Legend','Ferocious','Swift','Lucky'],note:'Strong combat mount and a rare Handiwork Lv7 worker — a combat stack serves both jobs.'}
+   passives:['Legend','Ferocious','Swift','Lucky'],note:'Strong combat mount and a rare Handiwork Lv7 worker — a combat stack serves both jobs.'},
+
+  /* ---------- ADDED PALS (1.0 verified) ---------- */
+  {no:'171',name:'Eidrolon',els:['Dragon','Dark'],cat:'mount',rarity:'Epic',role:'Top-speed flying mount · party-scaling attacker',
+   work:[['Transporting',6]],
+   partner:'Liberated Pterosaur',partnerText:'ride it as a <b>flying mount</b>; its Attack and Move Speed rise <b>+2–6% per other Dragon or Dark Pal</b> in your party (up to ~24% Attack at Condensation Lv5). Its Transporting also hits Lv10 at Condensation Rank 4.',
+   loc:'Field Alpha atop the <b>World Tree</b> (~Lv80); weaker packs drift the <b>Sunreach Sky Islands</b> (Lv65–69). Bring Ice damage.',coord:'-489, -1521',
+   recipe:R('rank'),passives:['Swift','Runner','Ferocious','Legend'],note:'With a mono Dragon/Dark team its speed rivals Jetragon and Xenolord — build for speed, or lean into the attack scaling as a nuke.'},
+  {no:'171B',name:'Eidrolon Ignis',els:['Dragon','Fire'],cat:'mount',rarity:'Epic',role:'Fire variant · flying mount + Kindling Lv6',
+   work:[['Kindling',6],['Transporting',6]],
+   partner:'Resentful Pterosaur',partnerText:'ride it as a <b>flying mount</b>; Attack and Move Speed rise <b>+2–6% per other Dragon or Fire Pal</b> in your party (up to 24% Attack at Condensation Rank 4).',
+   loc:'Wild spawn in the <b>World Tree NE</b>, day and night. No alpha exists — treat any quoted alpha coordinate with suspicion.',coord:'World Tree NE',
+   recipe:R('pair','Eidrolon','Suzaku','also hatches from a Huge (or Mutated) Dragon Egg'),
+   passives:['Artisan','Ferocious','Swift','Legend'],note:'Doubles as a strong base worker — Kindling Lv6 and Transporting Lv6 while also being an excellent late-game flyer.'},
+  {no:'137',name:'Blazamut',els:['Fire'],cat:'combat',rarity:'Epic',role:'Fire bruiser · Mining Lv7 king',
+   work:[['Mining',7],['Kindling',6]],
+   partner:'Magma Kaiser',partnerText:'enhances your <b>Fire-element attacks while mounted</b>; a hulking Fire bruiser that also tops the Mining charts at the base.',
+   loc:'Field Alpha (Lv49) in the <b>Scorching Mineshaft</b> SW of Foot of the Volcano; also from Huge/Large Scorching Eggs on Mount Obsidian.',coord:'-436, -529',
+   recipe:R('rank'),passives:['Legend','Ferocious','Artisan','Lucky'],note:'Reaches max Mining at Condenser rank 4. Its Dragon/Fire raid variant is Blazamut Ryu (#137B).'},
+  {no:'94',name:'Relaxaurus',els:['Dragon','Water'],cat:'combat',rarity:'Epic',role:'Missile-launcher gunner mount',
+   work:[['Transporting',3],['Watering',3]],
+   partner:'Hungry Missile',partnerText:'ride it and <b>rapid-fire a missile launcher</b> — reliable ranged AoE, and one of the earliest Dragon mounts you can grab.',
+   loc:'Roams the <b>Bamboo Groves</b>, Ascetic Falls and the Sealed Realm of the Thunder Dragon (~Lv15); also from a Huge Dragon Egg.',coord:'Bamboo Groves',
+   recipe:R('rank'),passives:['Ferocious','Musclehead','Swift','Burly Body'],note:'An accessible ranged fighter long before the legendaries. Its Electric variant is Relaxaurus Lux.'},
+  {no:'21',name:'Kingpaca',els:['Neutral'],cat:'worker',rarity:'Epic',role:'Rideable transport bruiser',
+   work:[['Transporting',2]],
+   partner:'King of Muscles',partnerText:'while in your team it <b>hauls supplies for you</b>, raising your max carry capacity; can also be ridden.',
+   loc:'Alpha northwest of the <b>Small Settlement</b>, always escorted by two Melpaca.',coord:'Small Settlement · alpha',
+   recipe:R('rank'),passives:['Swift','Artisan','Serious','Lucky'],note:'Its carry-capacity party skill matters more than its modest base work. The Ice variant is Kingpaca Cryst.'},
+  {no:'104',name:'Ragnahawk',els:['Fire'],cat:'mount',rarity:'Rare',role:'Fire flying mount · furnace worker',
+   work:[['Kindling',3],['Transporting',3]],
+   partner:'Flame Wing',partnerText:'ride it as a <b>flying mount</b> that adds <b>Fire</b> damage to your attacks — and it doubles as a base furnace and transport worker.',
+   loc:'North of the <b>Sealed Realm of the Swordmaster</b>; also around the Twilight Dunes.',coord:'Swordmaster realm',
+   recipe:R('rank'),passives:['Swift','Runner','Artisan'],note:'A catchable fire flyer that earns its slot as both a mount and a Kindling/Transport worker.'},
+  {no:'58',name:'Arsox',els:['Fire'],cat:'early',rarity:'Common',role:'Early Fire ground mount · cold-weather rider',
+   work:[['Kindling',2],['Lumbering',1]],
+   partner:'Warm Body',partnerText:'ride it and it <b>keeps you warm in cold environments</b> — an early Fire mount that also lights your first furnace.',
+   loc:'Bamboo groves and forest edges; easiest pair is Lamball + Rayhound Cryst.',coord:'bamboo groves',
+   recipe:R('rank'),passives:['Swift','Runner','Ferocious'],note:'A cheap early mount for cold biomes that also covers early Kindling before the specialists unlock.'}
 ];
 
 const gradeLabel={t3:'TIER 3',t2:'TIER 2',util:'UTILITY'};
@@ -869,6 +914,31 @@ tGrid.innerHTML=TEMPLATES.map(t=>`<div class="tmpl-card">
   <p class="tmpl-purpose">${t.purpose}</p>
   <div class="tmpl-rows">${t.rows.map(([job,pal])=>`<div class="tmpl-row"><span class="tmpl-job">${job}</span><span class="tmpl-pal">${pal}</span></div>`).join('')}</div>
   ${t.tip?`<div class="tmpl-tip">${t.tip}</div>`:''}</div>`).join('');
+
+/* ---------- specimen roster ---------- */
+const rosterGrid=document.getElementById('rosterGrid');
+const rosterTabs=document.getElementById('rosterTabs');
+let rosterCat='all';
+function dossier(p){
+  return `<div class="dossier" style="--catcolor:var(${CATS[p.cat].color})">
+    <div class="d-top">${palPortrait(p)}
+      <div class="d-title"><h4>${p.name}</h4><div class="d-role">${p.role}</div>
+      <div class="d-chips">${p.els.map(elChip).join('')}<span class="rarity r-${p.rarity}">${p.rarity}</span></div></div>
+    </div>
+    ${p.work&&p.work.length?`<div class="d-work">${workChips(p.work)}</div>`:''}
+    <div class="d-block"><div class="d-label">Recipe</div>${recipeMini(p)}</div>
+    <div class="d-block"><div class="d-label">Passive target</div><div class="passives">${passiveChips(p.passives)}</div></div>
+    <div class="d-block"><div class="d-label">Source</div><div class="loc"><div class="txt">${p.loc} <span class="coord">${p.coord}</span></div></div></div>
+  </div>`;
+}
+function renderRoster(){
+  const list=rosterCat==='all'?PALS:PALS.filter(p=>p.cat===rosterCat);
+  rosterGrid.innerHTML=list.map(dossier).join('');
+}
+const rosterCats=[['all',{label:'All',color:'--paldium'}]].concat(Object.entries(CATS));
+rosterTabs.innerHTML=rosterCats.map(([k,v])=>`<button class="tab ${k==='all'?'active':''}" data-cat="${k}"><span class="cdot" style="background:var(${v.color})"></span>${v.label}<span class="cnt">${k==='all'?PALS.length:PALS.filter(p=>p.cat===k).length}</span></button>`).join('');
+rosterTabs.addEventListener('click',e=>{const b=e.target.closest('.tab');if(!b)return;rosterCat=b.dataset.cat;[...rosterTabs.children].forEach(c=>c.classList.remove('active'));b.classList.add('active');renderRoster();});
+renderRoster();
 
 /* ---------- scroll-spy: highlight the active section in the sticky nav ---------- */
 (function(){
