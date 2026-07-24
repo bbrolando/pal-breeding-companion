@@ -1,5 +1,5 @@
-const CACHE='bfl-v1';
-const SHELL=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./apple-touch-icon.png','./favicon-32.png'];
+const CACHE='bfl-v2';
+const SHELL=['./','./index.html','./manifest.webmanifest','./icon192.png','./icon512.png','./appletouchicon.png','./favicon32.png'];
 self.addEventListener('install',function(e){
   e.waitUntil((async function(){
     const c=await caches.open(CACHE);
