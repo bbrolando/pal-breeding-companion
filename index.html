@@ -7,8 +7,8 @@
 <meta name="description" content="A Palworld 1.0 breeding companion — recipes, passive builds, team coverage, and base staffing." />
 <meta name="theme-color" content="#0F1218" />
 <link rel="manifest" href="./manifest.webmanifest" />
-<link rel="icon" href="./favicon32.png" sizes="32x32" />
-<link rel="apple-touch-icon" href="./appletouchicon.png" />
+<link rel="icon" href="./favicon-32.png" sizes="32x32" />
+<link rel="apple-touch-icon" href="./apple-touch-icon.png" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -275,6 +275,62 @@ a.tmpl-pal:hover{border-color:var(--paldium)}
 .ios-hint b{color:var(--paldium)}
 .ios-hint .x{position:absolute;top:8px;right:12px;color:var(--paper-faint);cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:14px}
 
+/* --- search trigger --- */
+.search{cursor:pointer}
+.search .ph{color:var(--paper-faint);font-family:'JetBrains Mono',monospace;font-size:12.5px;flex:1;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.search .kbd{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--paper-dim);border:1px solid var(--line);border-radius:4px;padding:2px 6px;background:var(--ink-2);flex-shrink:0}
+
+/* --- my box --- */
+#myBoxBar{margin-bottom:16px}
+.box-empty{font-size:12.5px;color:var(--paper-faint);font-family:'JetBrains Mono',monospace;line-height:1.5;background:var(--ink-3);border:1px dashed var(--line);border-radius:9px;padding:12px 14px}
+.box-head{display:flex;align-items:baseline;gap:10px;margin-bottom:9px}
+.box-title{font-family:'Oswald',sans-serif;font-size:15px;text-transform:uppercase;letter-spacing:.5px}
+.box-cnt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--paldium)}
+.box-chips{display:flex;flex-wrap:wrap;gap:7px}
+.box-chip{display:inline-flex;align-items:center;gap:8px;font-family:'Oswald',sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:.3px;color:var(--paper);background:var(--ink-3);border:1px solid var(--paldium-dim);border-radius:16px;padding:5px 12px;cursor:pointer;transition:border-color .15s}
+.box-chip:hover{border-color:var(--paldium)}
+.box-chip b{color:var(--paper-faint);font-size:11px;cursor:pointer;transition:color .15s}
+.box-chip b:hover{color:var(--cat-combat)}
+.cov-toolbar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.cov-toolbar button{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--paper);background:var(--ink-3);border:1px solid var(--line);border-radius:7px;padding:8px 13px;cursor:pointer;transition:border-color .15s,color .15s}
+.cov-toolbar button:hover{border-color:var(--paldium);color:var(--paldium)}
+
+/* --- bench own button --- */
+.ownbtn{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.5px;text-transform:uppercase;color:var(--ink);background:var(--paldium);border:1px solid var(--paldium);border-radius:7px;padding:8px 14px;cursor:pointer;font-weight:700;transition:background .15s,color .15s}
+.ownbtn.owned{background:transparent;color:var(--paldium)}
+.ownbtn:hover{opacity:.9}
+
+/* --- coverage recommendations --- */
+.cov-recs{margin-top:14px;background:var(--ink-3);border:1px solid var(--line);border-left:3px solid var(--paldium);border-radius:8px;padding:12px 16px}
+.cov-recs .rt{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1.5px;color:var(--paldium);text-transform:uppercase;margin-bottom:8px}
+.cov-recs ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.cov-recs li{font-size:13px;color:var(--paper-dim)}
+.cov-recs li b{color:var(--paper)}
+a.rec-pal{color:var(--paldium);cursor:pointer;border-bottom:1px solid var(--paldium-dim);font-weight:600;text-decoration:none}
+a.rec-pal:hover{color:var(--paper)}
+
+/* --- templates ownership --- */
+.tmpl-own{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.5px;color:var(--paper-faint);margin-bottom:10px}
+.tmpl-row.own{border-color:var(--paldium-dim)}
+
+/* --- command palette --- */
+.pal-overlay{position:fixed;inset:0;z-index:100;background:rgba(8,10,14,.72);display:none;align-items:flex-start;justify-content:center;padding-top:12vh}
+.pal-overlay.show{display:flex}
+.pal-modal{width:min(560px,92vw);background:var(--ink-2);border:1px solid var(--line);border-radius:12px;box-shadow:0 30px 80px -20px rgba(0,0,0,.9);overflow:hidden}
+.pal-in{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.pal-in svg{stroke:var(--paper-faint);flex-shrink:0}
+.pal-in input{flex:1;background:none;border:none;outline:none;color:var(--paper);font-family:'JetBrains Mono',monospace;font-size:15px}
+.pal-in .kbd{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--paper-dim);border:1px solid var(--line);border-radius:4px;padding:2px 6px}
+.pal-results{max-height:52vh;overflow:auto}
+.pal-item{display:flex;align-items:center;gap:12px;padding:11px 16px;cursor:pointer;border-left:2px solid transparent}
+.pal-item.active{background:var(--ink-3);border-left-color:var(--paldium)}
+.pal-item .k{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--ink);background:var(--paper-dim);border-radius:4px;padding:2px 6px;flex-shrink:0}
+.pal-item .k.pass{background:var(--amber)}
+.pal-item .nm{font-family:'Oswald',sans-serif;font-size:16px;text-transform:uppercase;letter-spacing:.4px}
+.pal-item .meta{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--paper-faint)}
+.pal-empty{padding:24px 16px;text-align:center;color:var(--paper-faint);font-family:'JetBrains Mono',monospace;font-size:12.5px}
+.prow.flash{border-color:var(--paldium);box-shadow:0 0 0 2px rgba(56,214,200,.35)}
+
 @media (max-width:720px){
   .bench{grid-template-columns:1fr}
   .brand h1{font-size:15px}
@@ -291,6 +347,11 @@ a.tmpl-pal:hover{border-color:var(--paldium)}
 <header class="bar">
   <div class="bar-inner">
     <div class="brand"><span class="tag">PAL·1.0</span><h1>Breeder's Field Ledger</h1></div>
+    <button class="search" id="paletteBtn" type="button" aria-label="Search Pals and passives">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.5" y2="16.5"></line></svg>
+      <span class="ph">Search Pals, passives…</span>
+      <span class="kbd">⌘K</span>
+    </button>
   </div>
   <nav class="subnav" id="subnav" aria-label="Sections">
     <a href="#bench">Bench</a>
@@ -306,7 +367,7 @@ a.tmpl-pal:hover{border-color:var(--paldium)}
   <section class="hero">
     <div class="eyebrow">Specimen catalog · breeding protocol · field locations</div>
     <h2>Pair the parents. <em>Roll the passives.</em> Staff the base.</h2>
-    <p>A working companion for Palworld 1.0 breeding across the whole game: early-game starters, the Level-8 base-worker specialists, and the endgame combat and boss-killing legends — each with a recipe, the passive stack to grind for, and where to source it.</p>
+    <p>A working companion for Palworld 1.0 breeding across the whole game: early-game starters, the ranch producers that fuel breeding, the Level-8 base-worker specialists, and the endgame combat and boss-killing legends — each with a recipe, the passive stack to grind for, and where to source it.</p>
     <div class="meta-row">
       <div><b id="palCount">30</b><span>specimens</span></div>
       <div><b>4</b><span>role categories</span></div>
@@ -333,6 +394,11 @@ a.tmpl-pal:hover{border-color:var(--paldium)}
   <section id="coverage">
     <div class="sec-head"><span class="sec-num">02</span><h3>Team Coverage Planner</h3><span class="hint">pick up to 5 → find the gaps</span></div>
     <div class="planner">
+      <div id="myBoxBar"></div>
+      <div class="cov-toolbar">
+        <button id="fillFromBox" type="button">▸ Fill team from My Box</button>
+        <button id="clearTeam" type="button">Clear</button>
+      </div>
       <div class="team-picks" id="teamPicks"></div>
       <div class="cov-out" id="covOut"></div>
     </div>
@@ -404,7 +470,7 @@ a.tmpl-pal:hover{border-color:var(--paldium)}
 
   <footer>
     <div class="disc">
-      <b>On the data.</b> Every Paldeck number, element, and work-suitability level here is pulled from a single current 1.0 index, so they stay consistent (older guides use a different numbering). Recipes marked <span class="mono">rank breed</span> have hundreds of valid pairs — the calculators below find the cheapest from Pals you own; <span class="mono">self-only</span> legendaries are caught once then bred together for passives; <span class="mono">raid</span> Pals come from Summoning Altar slabs. A handful of spawn coordinates are exact; others give the region. Pals show an original element crest by default — to display real sprites, drop image files named by Paldeck number into an <span class="mono">images/</span> folder beside this file (e.g. <span class="mono">images/150.png</span>, <span class="mono">images/200B.png</span>).
+      <b>On the data.</b> Every Paldeck number, element, and work-suitability level here is pulled from a single current 1.0 index, so they stay consistent (older guides use a different numbering). Recipes marked <span class="mono">rank breed</span> have hundreds of valid pairs — mark Pals in My Box (the ✚ button on the Bench) to track what you own and flag breedable-now pairs, or use a live calculator for the full pair list; <span class="mono">self-only</span> legendaries are caught once then bred together for passives; <span class="mono">raid</span> Pals come from Summoning Altar slabs. A handful of spawn coordinates are exact; others give the region. Pals show an original element crest by default — to display real sprites, drop image files named by Paldeck number into an <span class="mono">images/</span> folder beside this file (e.g. <span class="mono">images/150.png</span>, <span class="mono">images/200B.png</span>).
     </div>
     <div class="links">
       <a href="https://palworld.gg/breeding-calculator" target="_blank" rel="noopener">palworld.gg — breeding calculator</a>
@@ -416,6 +482,19 @@ a.tmpl-pal:hover{border-color:var(--paldium)}
 </div>
 
 <script>
+const BOX_KEY='fl_box_v1';
+const MyBox=(function(){
+  var set=new Set();
+  try{var raw=localStorage.getItem(BOX_KEY);if(raw)set=new Set(JSON.parse(raw));}catch(_){}
+  function save(){try{localStorage.setItem(BOX_KEY,JSON.stringify(Array.from(set)));}catch(_){}}
+  return {
+    has:function(n){return set.has(n);},
+    list:function(){return Array.from(set);},
+    size:function(){return set.size;},
+    toggle:function(n){if(set.has(n))set.delete(n);else set.add(n);save();document.dispatchEvent(new CustomEvent('boxchange'));},
+    add:function(n){if(!set.has(n)){set.add(n);save();document.dispatchEvent(new CustomEvent('boxchange'));}}
+  };
+})();
 const EL={Neutral:'--el-neutral',Fire:'--el-fire',Water:'--el-water',Grass:'--el-grass',Electric:'--el-electric',Ice:'--el-ice',Ground:'--el-ground',Dark:'--el-dark',Dragon:'--el-dragon'};
 function elChip(n){const v=EL[n]?`var(${EL[n]})`:'var(--paper)';return `<span class="el" style="color:${v};border-color:${v}55;background:${v}12"><span class="dot" style="background:${v}"></span>${n}</span>`;}
 function elColor(n){return EL[n]?`var(${EL[n]})`:'var(--paper)';}
@@ -507,6 +586,37 @@ const PALS=[
    partner:'—',partnerText:'a nimble, quick ground mount for scouting the first islands.',
    loc:'Plains and dunes of the early map.',coord:'plains',
    recipe:R('rank'),passives:['Swift','Runner','Nimble'],note:'Cheap speed before you can catch a proper flyer.'},
+
+  {no:'3',name:'Chikipi',els:['Neutral'],cat:'early',rarity:'Common',role:'Ranch · Eggs for cake',
+   work:[['Farming',1],['Gathering',1]],
+   partner:'—',partnerText:'the only Pal that lays <b>Eggs</b> at a Ranch — the core cake ingredient, so a breeding base can\'t run without one.',
+   loc:'Everywhere in the <b>starting grasslands</b> — the most common Pal in the game.',coord:'starter zone',
+   recipe:R('rank',null,null,'just catch one near spawn — no breeding needed'),passives:['Lucky','Serious'],note:'Ranch output scales with Farming level (condensing), not work speed — grab a few and condense; don\'t min-max passives.'},
+  {no:'40',name:'Mozzarina',els:['Neutral'],cat:'early',rarity:'Common',role:'Ranch · Milk for cake',
+   work:[['Farming',1]],
+   partner:'—',partnerText:'the only source of <b>Milk</b> — needed for cake (breeding) plus pancakes and stews. One or two keeps the cake supply flowing.',
+   loc:'Grasslands and open pastures across the first regions.',coord:'grasslands',
+   recipe:R('rank',null,null,'wild-catch — no breeding needed'),passives:['Lucky','Serious'],note:'Cake needs 7 Milk per bake; condense a Mozzarina or two rather than chasing passives.'},
+  {no:'34',name:'Caprity',els:['Grass'],cat:'early',rarity:'Common',role:'Ranch · Berries + planting',
+   work:[['Planting',2],['Farming',1],['Gathering',1]],
+   partner:'—',partnerText:'drops <b>Red Berries</b> at a Ranch and plants seed beds — covers a cake ingredient and early food at once.',
+   loc:'Forest edges and meadows near the start.',coord:'starter forest',
+   recipe:R('rank',null,null,'wild-catch near spawn'),passives:['Artisan','Serious','Lucky'],note:'One Caprity on the Ranch handles Red Berries for cake; a second can plant your crop beds.'},
+  {no:'12',name:'Gumoss',els:['Grass','Ground'],cat:'early',rarity:'Common',role:'Cheap early generalist',
+   work:[['Planting',1],['Handiwork',1],['Gathering',1],['Transporting',1]],
+   partner:'—',partnerText:'a throwaway early worker covering four jobs — plentiful and free to replace.',
+   loc:'Forests and swampy lowlands near spawn, often at night.',coord:'starter forest',
+   recipe:R('rank'),passives:['Artisan','Serious','Lucky'],note:'Fills gaps on your first base until you catch proper generalists like Lifmunk and Tanzee.'},
+  {no:'103',name:'Chillet',els:['Ice','Dragon'],cat:'early',rarity:'Rare',role:'Early ride · first Dragon',
+   work:[['Gathering',1],['Watering',1]],
+   partner:'Spinning Attack',partnerText:'an early ground mount that rolls into a fast <b>spin-dash</b> — your first taste of a Dragon-type before the legendaries.',
+   loc:'Bamboo Groves and forests, roughly the Lv12–18 band.',coord:'bamboo groves',
+   recipe:R('rank'),passives:['Swift','Runner','Nimble'],note:'A capable early mount; its Ice/Dragon typing also gives you a first answer to Dragon mobs.'},
+  {no:'20',name:'Melpaca',els:['Neutral'],cat:'early',rarity:'Common',role:'Early ride + wool ranch',
+   work:[['Farming',1]],
+   partner:'—',partnerText:'a starter ground mount that also drops <b>Wool</b> at a Ranch — with no other work jobs, it never wanders off the pen.',
+   loc:'Grassy hills and plains near the first bases.',coord:'grasslands',
+   recipe:R('rank',null,null,'wild-catch near spawn'),passives:['Swift','Runner'],note:'Early Wool for beds and armor without hand-shearing; doubles as a first mount.'},
 
   /* ---------- BASE WORKERS ---------- */
   {no:'139',name:'Anubis',els:['Ground'],cat:'worker',rarity:'Epic',role:'Best all-round worker · fighter',
@@ -612,6 +722,32 @@ const PALS=[
    loc:'Breedable via rank-combo; check the interactive map for wild spawns. Weak to Dark.',coord:'see map',
    recipe:R('rank'),passives:['Artisan','Lucky','Serious'],note:'Utility support in the party; a capable Handiwork Lv6 worker on the base.'},
 
+  {no:'67',name:'Beegarde',els:['Grass'],cat:'worker',rarity:'Common',role:'Ranch · Honey + light worker',
+   work:[['Planting',2],['Gathering',1],['Handiwork',1],['Transporting',1],['Farming',1]],
+   partner:'Beeleaguer',partnerText:'drops <b>Honey</b> at a Ranch (a cake ingredient) and detonates in a swarm attack in the field.',
+   loc:'Forests and flower fields in the first and second regions.',coord:'forest / meadow',
+   recipe:R('rank'),passives:['Lucky','Serious'],note:'The Honey producer for cake; it also chips in on planting and handiwork between ranch drops.'},
+  {no:'39',name:'Woolipop',els:['Neutral'],cat:'worker',rarity:'Rare',role:'Ranch · Cotton Candy (sanity)',
+   work:[['Farming',1]],
+   partner:'—',partnerText:'the only source of <b>Cotton Candy</b> — a strong sanity restore. Keep some in the feed box and the whole base stays sane.',
+   loc:'Grasslands at night; the candy-sheep is a night spawn.',coord:'nocturnal grass',
+   recipe:R('rank'),passives:['Lucky','Serious'],note:'Sanity upkeep is the quiet fix for base productivity — one Woolipop\'s cotton candy stops workers melting down.'},
+  {no:'27',name:'Mau',els:['Dark'],cat:'worker',rarity:'Common',role:'Ranch · Gold income',
+   work:[['Mining',1],['Farming',1]],
+   partner:'—',partnerText:'digs up <b>Gold Coins</b> at a Ranch — passive income while you play. The Cryst variant does the same.',
+   loc:'Caves and rocky night spawns across the early map.',coord:'caves · night',
+   recipe:R('rank',null,null,'wild-catch — the little cat is easy to grab'),passives:['Lucky','Serious'],note:'Gold pays for merchant Pals, ammo and schematics; condense Mau to raise the coin yield.'},
+  {no:'116',name:'Sibelyx',els:['Ice'],cat:'worker',rarity:'Epic',role:'Ranch · High-Quality Cloth + handiwork',
+   work:[['Handiwork',3],['Cooling',2],['Farming',1]],
+   partner:'—',partnerText:'the only Pal that produces <b>High Quality Cloth</b> at a Ranch — the mid-to-late fabric gate for saddles and gear.',
+   loc:'Snow and ice regions in the mid-to-late game.',coord:'snowfields',
+   recipe:R('rank'),passives:['Artisan','Serious','Lucky'],note:'Cloth is a constant crafting bottleneck; a Sibelyx on the Ranch removes it.'},
+  {no:'25',name:'Flambelle',els:['Fire'],cat:'worker',rarity:'Common',role:'Ranch · Flame Organ + kindling',
+   work:[['Kindling',1],['Farming',1]],
+   partner:'—',partnerText:'drops <b>Flame Organ</b> at a Ranch — the fuel/ammo staple you\'d otherwise farm by killing Fire Pals.',
+   loc:'Volcanic zones around Mount Obsidian.',coord:'volcano',
+   recipe:R('rank',null,null,'wild-catch in the volcano region'),passives:['Lucky','Serious'],note:'Flame Organ feeds ammo and cooking; ranching it beats hunting Fire Pals for drops.'},
+
   /* ---------- COMBAT & BOSS ---------- */
   {no:'199',name:'Necromus',els:['Dark'],cat:'combat',rarity:'Legendary',role:'S+ Dark nuke · anti-Neutral',
    work:[['Lumbering',6],['Mining',6]],
@@ -677,6 +813,38 @@ const PALS=[
    recipe:R('pair','Arsox','Kingpaca','also: Tanzee+Blazamut · Rooby+Neptilius'),
    passives:['Legend','Ferocious','Swift','Lucky'],note:'Its value is the XP aura, so keep it alive; add the combat stack only if you also fight with it.'},
 
+  {no:'113',name:'Warsect',els:['Grass','Ground'],cat:'combat',rarity:'Epic',role:'Tanky Grass/Ground fighter',
+   work:[['Lumbering',3],['Handiwork',2],['Planting',2]],
+   partner:'Beetle Carapace',partnerText:'an armored bruiser whose partner skill hardens your own defense — rare <b>Grass + Ground</b> coverage in one body.',
+   loc:'Jungle and forest mid-game regions; an Alpha spawns in the bamboo highlands.',coord:'jungle · alpha',
+   recipe:R('rank'),passives:['Burly Body','Ferocious','Legend','Swift'],note:'Fills two coverage holes at once — bring it against Water and Electric-heavy fights.'},
+  {no:'112',name:'Blazehowl',els:['Fire'],cat:'combat',rarity:'Rare',role:'Fire combat mount',
+   work:[['Kindling',3],['Lumbering',2]],
+   partner:'Full Flame Roar',partnerText:'ride it and it breathes a <b>continuous flamethrower</b> ahead of you — accessible, sustained Fire damage.',
+   loc:'Volcanic foothills and the Mount Obsidian approach.',coord:'volcano',
+   recipe:R('rank'),passives:['Legend','Ferocious','Musclehead','Swift'],note:'A catchable Fire fighter-mount long before the raid legendaries; also a solid furnace worker.'},
+  {no:'94',name:'Relaxaurus',els:['Dragon','Water'],cat:'combat',rarity:'Epic',role:'Missile-launcher Dragon/Water',
+   work:[['Watering',2],['Transporting',2]],
+   partner:'Motion Sickness Fastball',partnerText:'mount it with a <b>missile launcher</b> for heavy ranged burst; its Dragon/Water typing covers Fire and Ground bosses.',
+   loc:'Lakeshores and rivers in the mid-game, often near Bamboo Groves.',coord:'lakes',
+   recipe:R('rank'),passives:['Ferocious','Musclehead','Legend','Swift'],note:'Great budget Water/Dragon damage; the Lux variant swaps to Electric if you need that coverage instead.'},
+  {no:'159',name:'Knocklem',els:['Ground'],cat:'combat',rarity:'Epic',role:'Ground bruiser · reliable coverage',
+   work:[['Mining',3],['Lumbering',3]],
+   partner:'—',partnerText:'a Feybreak heavyweight that hits hard with pure <b>Ground</b> damage — dependable when no element advantage applies.',
+   loc:'<b>Feybreak</b> island, roaming the rocky interior.',coord:'Feybreak',
+   recipe:R('rank'),passives:['Legend','Ferocious','Musclehead','Burly Body'],note:'Your Ground answer for Electric bosses, and a stat-stick that performs even off-element.'},
+  {no:'171',name:'Eidrolon',els:['Dragon','Dark'],cat:'combat',rarity:'Epic',role:'Dragon/Dark flying nuke',
+   work:[['Gathering',2],['Handiwork',2]],
+   partner:'Umbral Meteor',partnerText:'a <b>flying mount</b> that rains Dark-Dragon spellfire; ride it and your own attacks pick up Dragon damage.',
+   loc:'<b>Feybreak</b> island \u2014 patrols the skies over the interior at night.',coord:'Feybreak \u00b7 night',
+   recipe:R('rank'),passives:['Legend','Ferocious','Swift','Musclehead'],note:'Doubles as Dragon and Dark coverage; strong against Neutral mobs and other Dragons alike.'},
+  {no:'171B',name:'Eidrolon Ignis',els:['Dragon','Fire'],cat:'combat',rarity:'Epic',role:'Dragon/Fire flying nuke',
+   work:[['Kindling',3],['Gathering',2]],
+   partner:'Ember Meteor',partnerText:'the Fire variant \u2014 a flying mount that adds <b>Fire</b> to your attacks and hits hard against Grass, Ice and Ground.',
+   loc:'<b>Feybreak</b> volcanic zones; also bred from Eidrolon.',coord:'Feybreak \u00b7 volcano',
+   recipe:R('special',null,null,'variant of Eidrolon \u2014 verify the exact combo on a live calculator'),
+   passives:['Legend','Ferocious','Swift','Musclehead'],note:'Fire + Dragon coverage in one flyer, and a Kindling worker on the side.'},
+
   /* ---------- MOUNTS / EXPLORATION ---------- */
   {no:'202',name:'Jetragon',els:['Dragon'],cat:'mount',rarity:'Legendary',role:'Fastest flying mount',
    work:[['Gathering',8]],
@@ -695,7 +863,17 @@ const PALS=[
    partner:'Celestial Darkness',partnerText:'ride as a flying mount; boosts your <b>Dark and Neutral</b> attack damage.',
    loc:'Spawns only during a <b>Meteorite Event on Sakurajima</b>, by the meteorite. Bring Ultra/Legendary Spheres + a Ring of Mercy.',coord:'Sakurajima · meteorite',
    recipe:R('pair','Paladius','Lunaris','meteorite catch is often faster than the event wait'),
-   passives:['Legend','Ferocious','Swift','Lucky'],note:'Strong combat mount and a rare Handiwork Lv7 worker — a combat stack serves both jobs.'}
+   passives:['Legend','Ferocious','Swift','Lucky'],note:'Strong combat mount and a rare Handiwork Lv7 worker — a combat stack serves both jobs.'},
+  {no:'104',name:'Ragnahawk',els:['Fire'],cat:'mount',rarity:'Rare',role:'Fire flying mount',
+   work:[['Kindling',3],['Transporting',2]],
+   partner:'Flare Hawk',partnerText:'a <b>flying mount that keeps you warm</b> in cold biomes and rains Fire attacks — and you keep your weapons while riding.',
+   loc:'Volcanic highlands and the Mount Obsidian ridgelines.',coord:'volcano highlands',
+   recipe:R('rank'),passives:['Swift','Runner','Ferocious','Legend'],note:'An earlier flyer that doubles as Fire coverage and negates cold-region damage.'},
+  {no:'83',name:'Fenglope',els:['Neutral'],cat:'mount',rarity:'Rare',role:'Fast ground mount · double-jump',
+   work:[['Gathering',1]],
+   partner:'Graceful Sprint',partnerText:'a very fast ground mount that can <b>double-jump and glide</b> — superb for crossing terrain without a flyer.',
+   loc:'Open plains and the Twilight Dunes.',coord:'plains / dunes',
+   recipe:R('rank'),passives:['Swift','Runner','Nimble','Legend'],note:'Movement-passive build; a cheaper everyday traversal option than Jetragon.'}
 ];
 
 const gradeLabel={t3:'TIER 3',t2:'TIER 2',util:'UTILITY'};
@@ -719,6 +897,7 @@ const benchOut=document.getElementById('benchOut');
 function renderBench(name){
   const p=PALS.find(x=>x.name===name);if(!p)return;
   let recipeBlock;
+  let breedable='';
   if(p.recipe.type==='pair'){
     recipeBlock=`<div class="recipe">
       <div class="parent"><div class="role">Parent A</div><div class="who">${p.recipe.a}</div></div>
@@ -730,19 +909,24 @@ function renderBench(name){
     const tagmap={self:'Self-only legendary — catch one, then breed two together',raid:'Raid boss — summon at an Altar with its Slab',special:'Special / rank breed',rank:'Rank breed — hundreds of valid pairs'};
     recipeBlock=`<div class="recipe"><div class="parent result" style="flex-basis:100%"><div class="role">Route</div><div class="who" style="font-size:16px;color:var(--amber)">${tagmap[p.recipe.type]}</div></div></div>`;
   }
+  if(p.recipe.type==='pair'&&MyBox.has(p.recipe.a)&&MyBox.has(p.recipe.b))breedable='<div class="alt-line" style="margin-top:8px;color:var(--cat-early)">✓ You own both parents — breedable now.</div>';
   benchOut.innerHTML=`<div class="bench-target">${palPortrait(p)}<div>
       <div class="bt-name">${p.name}</div>
       <div class="bt-sub">#${p.no} · ${p.role}</div>
       <div class="d-chips" style="margin-top:8px">${p.els.map(elChip).join('')}<span class="rarity r-${p.rarity}">${p.rarity}</span></div>
     </div></div>
     ${recipeBlock}
+    ${breedable}
     ${p.recipe.note?`<div class="alt-line"><b>Note:</b> ${p.recipe.note}</div>`:''}
     <div class="alt-line" style="margin-top:10px"><b>Partner skill:</b> ${p.partner!=='—'?`<b style="color:var(--amber)">${p.partner}</b> — `:''}${p.partnerText}</div>
     ${p.work&&p.work.length?`<div class="alt-line" style="margin-top:10px"><b>Work:</b> ${workChips(p.work)}</div>`:''}
     <div class="alt-line" style="margin-top:10px"><b>Passive target:</b> ${passiveChips(p.passives)}</div>
     <div class="alt-line" style="margin-top:8px"><b>Source it:</b> ${p.loc} <span class="mono">${p.coord}</span></div>
     <div class="alt-line" style="margin-top:10px">${p.note}</div>
-    <div style="margin-top:14px"><a href="#guide" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--amber);text-decoration:none;border-bottom:1px solid var(--amber-dim)">passive breeding guide for ${p.name} \u2193</a></div>`;
+    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <button class="ownbtn${MyBox.has(p.name)?' owned':''}" type="button" data-own="${p.name}">${MyBox.has(p.name)?'✓ In My Box':'✚ Add to My Box'}</button>
+      <a href="#guide" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--amber);text-decoration:none;border-bottom:1px solid var(--amber-dim)">passive breeding guide for ${p.name} \u2193</a>
+    </div>`;
 }
 function renderGuide(pal){
   const box=document.getElementById('guideDynamic');
@@ -835,9 +1019,11 @@ function renderCoverage(){
     verdict=`<b>${gaps.length} gap${gaps.length>1?'s':''}:</b> no super-effective answer to ${gaps.join(', ')}.`;
     if(keyGaps.length)verdict+=`<span class="warn">Priority \u2014 common boss elements: ${keyGaps.map(g=>g+' (bring a '+COUNTER[g]+' Pal)').join('; ')}.</span>`;
   }
+  var recsBlock=gaps.length?'<div class="cov-recs"><div class="rt">Fill the gaps</div><ul>'+gaps.map(function(en){var need=COUNTER[en];var cands=PALS.filter(function(p){return p.els.indexOf(need)>-1;});var owned=cands.find(function(p){return MyBox.has(p.name);});var pick=owned||cands.find(function(p){return p.cat==='combat'||p.cat==='mount';})||cands[0];return pick?'<li>Beat <b>'+en+'</b> — bring <a class="rec-pal" data-goto="'+pick.name+'">'+pick.name+'</a> <span style="color:var(--paper-faint);font-family:\'JetBrains Mono\',monospace;font-size:11px">'+(owned?'· in your box':'· '+need+'-type')+'</span></li>':'';}).filter(Boolean).join('')+'</ul></div>':'';
   covOut.innerHTML=`<div class="team-els"><span class="tel-label">Team brings</span> ${teamEls.map(elChip).join('')}</div>
     <div class="cov-grid">${cells}</div>
     <div class="verdict">${verdict}</div>
+    ${recsBlock}
     <div class="cov-note">Damage element = the Pal\u2019s type; super-effective hits deal \u00d71.5 and take half back. Dual-type Pals count for both. Dragon, Dark and Fire are the most common boss elements, so they\u2019re highlighted.</div>`;
 }
 teamPicks.addEventListener('change',renderCoverage);
@@ -847,6 +1033,9 @@ renderCoverage();
 const TEMPLATES=[
   {name:'Starter Base',tier:'Pre-Lv20',purpose:'Keep your first base self-sufficient before specialists unlock.',
    rows:[['Mining','Tombat'],['Generalist','Tanzee'],['Generalist','Lifmunk'],['Water + Cooling','Pengullet'],['Kindling','Foxparks'],['Ranch income','Vixy']]},
+  {name:'Ranch & Cake Base',tier:'Breeding fuel',purpose:'Automate the cake ingredients so the Breeding Farm never runs dry.',
+   rows:[['Egg','Chikipi'],['Milk','Mozzarina'],['Honey','Beegarde'],['Red Berries','Caprity'],['Sanity candy','Woolipop'],['Gold income','Mau']],
+   tip:'A Ranch holds four Pals — run Egg + Milk + Honey + Berries, and mill Flour from wheat separately. One cake = 5 Flour · 8 Red Berries · 7 Milk · 8 Eggs · 2 Honey.'},
   {name:'Mining Base',tier:'Ore & ingots',purpose:'Maximise ore throughput and keep the furnaces fed.',
    rows:[['Mining 8','Aegidron'],['Handiwork 6','Anubis'],['Transport 6','Wumpo'],['Electricity 8','Orserk']],
    tip:'Ride Astegon or Digtoise while you mine nodes for far faster / doubled ore.'},
@@ -859,11 +1048,80 @@ const TEMPLATES=[
    tip:'Breed Celesdir Noct for Lumbering Lv8 \u2014 the highest wood output in the game.'}
 ];
 const tGrid=document.getElementById('templatesGrid');
-tGrid.innerHTML=TEMPLATES.map(t=>`<div class="tmpl-card">
-  <div class="tmpl-head"><h5>${t.name}</h5><span class="tmpl-tier">${t.tier}</span></div>
-  <p class="tmpl-purpose">${t.purpose}</p>
-  <div class="tmpl-rows">${t.rows.map(([job,pal])=>`<div class="tmpl-row"><span class="tmpl-job">${job}</span><span class="tmpl-pal">${pal}</span></div>`).join('')}</div>
-  ${t.tip?`<div class="tmpl-tip">${t.tip}</div>`:''}</div>`).join('');
+function renderTemplates(){
+  tGrid.innerHTML=TEMPLATES.map(function(t){
+    var owned=t.rows.filter(function(r){return MyBox.has(r[1]);}).length;
+    return '<div class="tmpl-card">'+
+      '<div class="tmpl-head"><h5>'+t.name+'</h5><span class="tmpl-tier">'+t.tier+'</span></div>'+
+      '<p class="tmpl-purpose">'+t.purpose+'</p>'+
+      '<div class="tmpl-own">'+owned+' / '+t.rows.length+' in My Box</div>'+
+      '<div class="tmpl-rows">'+t.rows.map(function(r){var job=r[0],pal=r[1];var known=PALS.some(function(p){return p.name===pal;});var own=MyBox.has(pal);return '<div class="tmpl-row'+(own?' own':'')+'"><span class="tmpl-job">'+job+'</span>'+(known?'<a class="tmpl-pal" data-goto="'+pal+'">'+(own?'✓ ':'')+pal+'</a>':'<span class="tmpl-pal">'+pal+'</span>')+'</div>';}).join('')+'</div>'+
+      (t.tip?'<div class="tmpl-tip">'+t.tip+'</div>':'')+'</div>';
+  }).join('');
+}
+renderTemplates();
+
+/* ---------- My Box · palette · persistence · deep-links ---------- */
+(function(){
+  function goSection(id){var el=document.getElementById(id);if(el)window.scrollTo({top:el.getBoundingClientRect().top+window.pageYOffset-96,behavior:'smooth'});}
+  function gotoPal(n){if(!PALS.some(function(p){return p.name===n;}))return;sel.value=n;renderBench(n);renderGuide(PALS.find(function(p){return p.name===n;}));try{localStorage.setItem('fl_target',n);}catch(_){}goSection('bench');}
+
+  var bar=document.getElementById('myBoxBar');
+  function renderBoxBar(){
+    if(!bar)return;
+    var list=MyBox.list();
+    if(!list.length){bar.innerHTML='<div class="box-empty">Your box is empty — add Pals from the Bench (the ✚ button) to personalise coverage gaps, breedable-now routes and base checklists.</div>';return;}
+    bar.innerHTML='<div class="box-head"><span class="box-title">My Box</span><span class="box-cnt">'+list.length+' Pal'+(list.length>1?'s':'')+' owned</span></div><div class="box-chips">'+list.map(function(n){return '<span class="box-chip" data-goto="'+n+'">'+n+'<b data-rm="'+n+'" role="button" aria-label="Remove">✕</b></span>';}).join('')+'</div>';
+  }
+
+  var q=new URLSearchParams(location.search);
+  var t=q.get('pal');if(!t){try{t=localStorage.getItem('fl_target');}catch(_){}}
+  if(t&&PALS.some(function(p){return p.name===t;})){sel.value=t;renderBench(t);renderGuide(PALS.find(function(p){return p.name===t;}));}
+  var teamStr=q.get('team');if(!teamStr){try{teamStr=localStorage.getItem('fl_team');}catch(_){}}
+  if(teamStr){var names=teamStr.split(',').map(function(s){return s.trim();}).filter(Boolean);var sl=[].slice.call(teamPicks.querySelectorAll('.psel'));names.slice(0,5).forEach(function(n,i){if(sl[i]&&PALS.some(function(p){return p.name===n;}))sl[i].value=n;});renderCoverage();}
+
+  sel.addEventListener('change',function(){try{localStorage.setItem('fl_target',sel.value);}catch(_){}});
+  teamPicks.addEventListener('change',function(){try{localStorage.setItem('fl_team',[].slice.call(teamPicks.querySelectorAll('.psel')).map(function(s){return s.value;}).filter(Boolean).join(','));}catch(_){}});
+
+  var fill=document.getElementById('fillFromBox');
+  if(fill)fill.addEventListener('click',function(){var owned=MyBox.list();var sl=[].slice.call(teamPicks.querySelectorAll('.psel'));sl.forEach(function(s,i){s.value=owned[i]||'';});renderCoverage();try{localStorage.setItem('fl_team',owned.slice(0,5).join(','));}catch(_){}});
+  var clr=document.getElementById('clearTeam');
+  if(clr)clr.addEventListener('click',function(){[].slice.call(teamPicks.querySelectorAll('.psel')).forEach(function(s){s.value='';});renderCoverage();try{localStorage.removeItem('fl_team');}catch(_){}});
+
+  document.addEventListener('click',function(e){
+    var rm=e.target.closest('[data-rm]');
+    if(rm){MyBox.toggle(rm.getAttribute('data-rm'));e.stopPropagation();return;}
+    var own=e.target.closest('[data-own]');
+    if(own){MyBox.toggle(own.getAttribute('data-own'));return;}
+    var go=e.target.closest('[data-goto]');
+    if(go){gotoPal(go.getAttribute('data-goto'));}
+  });
+  document.addEventListener('boxchange',function(){renderBoxBar();renderTemplates();renderCoverage();renderBench(sel.value);});
+  renderBoxBar();
+
+  var ov=document.createElement('div');ov.className='pal-overlay';ov.id='palOverlay';
+  ov.innerHTML='<div class="pal-modal"><div class="pal-in"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.5" y2="16.5"></line></svg><input id="palInput" placeholder="Search Pals, passives…" autocomplete="off"><span class="kbd">esc</span></div><div class="pal-results" id="palResults"></div></div>';
+  document.body.appendChild(ov);
+  var input=ov.querySelector('#palInput'),results=ov.querySelector('#palResults'),items=[],active=0;
+  function buildItems(qq){qq=(qq||'').trim().toLowerCase();var out=[];PALS.forEach(function(p){if(!qq||p.name.toLowerCase().indexOf(qq)>-1||('#'+p.no).indexOf(qq)>-1||p.role.toLowerCase().indexOf(qq)>-1)out.push({type:'pal',name:p.name,meta:'#'+p.no+' · '+CATS[p.cat].label});});PASSIVES.forEach(function(p){if(!qq||p.n.toLowerCase().indexOf(qq)>-1)out.push({type:'pass',name:p.n,meta:gradeLabel[p.g]});});return out.slice(0,40);}
+  function paint(){if(!items.length){results.innerHTML='<div class="pal-empty">No matches.</div>';return;}results.innerHTML=items.map(function(it,i){return '<div class="pal-item '+(i===active?'active':'')+'" data-i="'+i+'"><span class="k '+(it.type==='pass'?'pass':'')+'">'+(it.type==='pass'?'Passive':'Pal')+'</span><span class="nm">'+it.name+'</span><span class="meta">'+it.meta+'</span></div>';}).join('');}
+  function openP(){ov.classList.add('show');input.value='';items=buildItems('');active=0;paint();setTimeout(function(){input.focus();},30);}
+  function closeP(){ov.classList.remove('show');}
+  function choose(it){if(!it)return;closeP();if(it.type==='pal'){gotoPal(it.name);}else{goSection('passives');setTimeout(function(){var rows=[].slice.call(document.querySelectorAll('#plib .prow'));var r=rows.find(function(x){var pn=x.querySelector('.pn');return pn&&pn.textContent.trim().toLowerCase().indexOf(it.name.toLowerCase())===0;});if(r){r.classList.add('flash');setTimeout(function(){r.classList.remove('flash');},1600);}},450);}}
+  function ensureVisible(){var el=results.querySelector('.pal-item.active');if(!el)return;var rT=results.scrollTop,rB=rT+results.clientHeight,eT=el.offsetTop,eB=eT+el.offsetHeight;if(eT<rT)results.scrollTop=eT;else if(eB>rB)results.scrollTop=eB-results.clientHeight;}
+  input.addEventListener('input',function(){items=buildItems(input.value);active=0;paint();});
+  results.addEventListener('click',function(e){var el=e.target.closest('.pal-item');if(el)choose(items[+el.getAttribute('data-i')]);});
+  ov.addEventListener('click',function(e){if(e.target===ov)closeP();});
+  document.addEventListener('keydown',function(e){
+    if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();ov.classList.contains('show')?closeP():openP();return;}
+    if(!ov.classList.contains('show'))return;
+    if(e.key==='Escape'){closeP();}
+    else if(e.key==='ArrowDown'){e.preventDefault();active=Math.min(active+1,items.length-1);paint();ensureVisible();}
+    else if(e.key==='ArrowUp'){e.preventDefault();active=Math.max(active-1,0);paint();ensureVisible();}
+    else if(e.key==='Enter'){e.preventDefault();choose(items[active]);}
+  });
+  var pbtn=document.getElementById('paletteBtn');if(pbtn)pbtn.addEventListener('click',openP);
+})();
 
 /* ---------- scroll-spy: highlight the active section in the sticky nav ---------- */
 (function(){
