@@ -3,7 +3,7 @@
 // CACHE name is what makes the browser notice a new sw.js, install it,
 // and pull fresh files. Forgetting this step means installed devices
 // silently stay on the old cached version, even after you push new HTML.
-const CACHE='bfl-v2';
+const CACHE='bfl-v3';
 const SHELL=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./apple-touch-icon.png','./favicon-32.png'];
 self.addEventListener('install',function(e){
   e.waitUntil((async function(){
